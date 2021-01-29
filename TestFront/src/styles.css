@@ -1,8 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+@font-face {
+  font-family: "Vazir";
+  src: url("./assets/fonts/Vazir.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Vazir; }
 * { direction: rtl; text-align: right;}
 
 .card { box-shadow: 3px 0 20px 8px #ccc; }
