@@ -1,0 +1,31 @@
+<div class="card mx-auto">
+  <div class="card-header">
+    Todo List
+  </div>
+  <mat-progress-bar mode="indeterminate" *ngIf="isFetching"></mat-progress-bar>
+  <div class="card-body">
+    <button mat-raised-button class="mb-2" (click)="openModal()">New</button>
+    <ul class="list-group" *ngFor="let todo of todos; let i = index">
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <div class="mb-2">
+            <h4 class="d-inline mr-3">{{ todo.name }}</h4>
+              <mat-checkbox [checked]="todo.isComplete" labelPosition="before" color="primary" (change)="toggleTodoStatus(todo)">
+                <small class="text-muted">Completed</small>
+              </mat-checkbox>
+          </div>
+          <div>
+            <button mat-icon-button color="primary" title="edit">
+              <i class="fas fa-edit" (click)="openModal(i)"></i>
+            </button>
+            <button mat-icon-button color="warn" title="delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <p class="m-0">{{ todo.description }}</p>
+      </li>
+    </ul>
+    <p *ngIf="!isFetching && todos.length === 0">There is nothing to do</p>
+  </div>
+</div>

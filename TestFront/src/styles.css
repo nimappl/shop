@@ -3,9 +3,8 @@
 
 @import './assets/fonts/Vazir/Vazir.css';
 
-html, body { height: 100%; }
+html, body { height: 100%; direction: rtl; text-align: right; }
 body { margin: 0; font-family: Vazir; }
-* { direction: rtl; text-align: right;}
 
 .card { box-shadow: 3px 0 20px 8px #ccc; }
 table { font-size: .85rem; }

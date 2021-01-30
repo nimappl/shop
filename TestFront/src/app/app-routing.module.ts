@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ProductsComponent } from './products/products.component';
 import { RegisterComponent } from './register/register.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'categories', component: CategoriesComponent },
   { path: 'orders', component: OrdersComponent },
+  { path: 'todolist', component: TodoListComponent },
   { path: '**', redirectTo: '/products'},
   { path: '', redirectTo: '/products', pathMatch: 'full' }
 ];
