@@ -15,6 +15,21 @@ export class ProductsComponent implements OnInit {
     {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'گوشی موبایل', stock: 24, active: true},
     {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', category: 'لباس مردانه', price: 85000, stock: 13, active: true}
   ];
+  filters = [
+    {name: 'none'},
+    {brand: 'none'},
+    {price: 'none'},
+    {category: 'none'},
+    {stock: 'none'}
+  ];
+
+  shiftFilter(current: string) {
+    const types = ['none', 'asc', 'desc'];
+    if (current === 'none') return types[1];
+    if (current === 'asc') return types[2];
+    if (current === 'desc') return types[0];
+  }
+
   showSearchField = false;
   loading = false;
 
@@ -37,6 +52,13 @@ export class ProductsComponent implements OnInit {
 
   toggleSearch() {
     this.showSearchField = !this.showSearchField;
+  }
+
+  toggleSortFor(item: string) {
+    this.filters.forEach(x => {
+      if (x.hasOwnProperty(item))
+        x[item] = this.shiftFilter(x[item]);
+    });
   }
 
 }
