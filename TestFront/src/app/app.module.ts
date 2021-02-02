@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,7 +22,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from "@angular/material/input";
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListModalComponent } from './todo-list/todo-list-modal/todo-list-modal.component';
 
@@ -43,6 +46,7 @@ import { TodoListModalComponent } from './todo-list/todo-list-modal/todo-list-mo
     TodoListModalComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -52,7 +56,9 @@ import { TodoListModalComponent } from './todo-list/todo-list-modal/todo-list-mo
     MatDialogModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

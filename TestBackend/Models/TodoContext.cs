@@ -6,6 +6,6 @@ namespace TestBackend.Models
     {
         public TodoContext(DbContextOptions<TodoContext> options) : base(options) { }
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<TodoItem> TodoList { get; set; }
     }
 }

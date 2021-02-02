@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../../models/product';
+import { Product } from '../models/product';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductsModalComponent } from './products-modal/products-modal.component';
 

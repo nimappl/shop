@@ -1,1 +1,18 @@
-<h3>todo modal</h3>
+<mat-progress-bar mode="indeterminate" *ngIf="reachingOut"></mat-progress-bar>
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <mat-form-field class="w-100">
+    <mat-label>Title</mat-label>
+    <input matNativeControl [(ngModel)]="data.data.name">
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <mat-label>Description</mat-label>
+    <textarea rows="4" matNativeControl [(ngModel)]="data.data.description"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button type="submit" mat-button cdkFocusInitial (click)="onSave()">
+    {{ submit }}
+  </button>
+</div>

@@ -24,14 +24,14 @@ namespace TestBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _context.TodoList.ToListAsync();
         }
 
         // GET: api/TodoList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _context.TodoList.FindAsync(id);
 
             if (todoItem == null)
             {
@@ -79,7 +79,7 @@ namespace TestBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
-            _context.TodoItems.Add(todoItem);
+            _context.TodoList.Add(todoItem);
             await _context.SaveChangesAsync();
 
             // return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
@@ -88,15 +88,15 @@ namespace TestBackend.Controllers
 
         // DELETE: api/TodoList/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id)
+        public async Task<ActionResult<TodoItem>> DeleteTodoItem(int id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _context.TodoList.FindAsync(id);
             if (todoItem == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
+            _context.TodoList.Remove(todoItem);
             await _context.SaveChangesAsync();
 
             return todoItem;
@@ -104,7 +104,7 @@ namespace TestBackend.Controllers
 
         private bool TodoItemExists(long id)
         {
-            return _context.TodoItems.Any(e => e.Id == id);
+            return _context.TodoList.Any(e => e.Id == id);
         }
     }
 }

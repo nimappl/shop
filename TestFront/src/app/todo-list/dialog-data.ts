@@ -1,6 +1,6 @@
 import { TodoItem } from "../../models/todo-item";
 
-export interface DialogData {
+export class DialogData {
   data: TodoItem;
   mode: string;
 }
