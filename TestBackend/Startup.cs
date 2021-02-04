@@ -21,7 +21,7 @@ namespace TestBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddDbContext<TodoContext>(opt =>
+            services.AddDbContext<ShopContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
         }

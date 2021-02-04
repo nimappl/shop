@@ -13,7 +13,7 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [
     {name: 'اچ تی سی 10', brand: 'HTC', price: 1500000, category: 'گوشی موبایل', stock: 5, active: false},
     {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'گوشی موبایل', stock: 24, active: true},
-    {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', category: 'لباس مردانه', price: 85000, stock: 13, active: true}
+    {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', price: 85000, category: 'لباس مردانه', stock: 13, active: true}
   ];
 
   fields = [
@@ -58,8 +58,8 @@ export class ProductsComponent implements OnInit {
     this.showSearchField = !this.showSearchField;
   }
 
-  onEditProduct(index: number) {}
-
+  search() {}
+  
   onRemoveProduct(index: number) {}
 
   onActiveDeactive(index: number) {}

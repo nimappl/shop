@@ -23,7 +23,8 @@
       (editItem)="openModal($event)"
       (removeItem)="onRemoveProduct($event)"
       (activeChanged)="onActiveDeactive($event)"
-      (sortChanged)="onSortChange($event)">
+      (sortChanged)="onSortChange($event)"
+      (filtersChanged)="search($event)">
     </app-data-table>
   </div>
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>

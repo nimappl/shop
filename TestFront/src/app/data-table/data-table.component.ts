@@ -17,15 +17,17 @@ export class DataTableComponent implements OnInit {
   @Output() removeItem = new EventEmitter();
   @Output() activeChanged = new EventEmitter();
   @Output() sortChanged = new EventEmitter();
+  @Output() filtersChanged = new EventEmitter();
 
-  activeDeactive: boolean = true;
+  activeDeactive(): boolean {
+    if (this.records.length > 0 && this.records[0].hasOwnProperty('active'))
+      return true;
+      
+    return false;
+  }
 
   ngOnInit(): void {
-    if (this.records.length > 0)
-      if (this.records[0].hasOwnProperty('active'))
-        this.activeDeactive = true;
-      else
-        this.activeDeactive = false;
+      
   }
 
   toggleSearch() {

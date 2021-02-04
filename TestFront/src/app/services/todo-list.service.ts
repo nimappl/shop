@@ -9,18 +9,18 @@ export class TodoListService {
   constructor(private http: HttpClient) {}
 
   get() {
-    return this.http.get<TodoItem[]>(`${this.apiUri}/todolist`);
+    return this.http.get<TodoItem[]>(`${this.apiUri}/todo`);
   }
 
   create(todoItem: TodoItem) {
-    return this.http.post(`${this.apiUri}/todolist`, todoItem, { observe: 'response'});
+    return this.http.post(`${this.apiUri}/todo`, todoItem, { observe: 'response'});
   }
 
   update(todoItem: TodoItem) {
-    return this.http.put(`${this.apiUri}/todolist/${todoItem.id}`, todoItem, { observe: 'response'});
+    return this.http.put(`${this.apiUri}/todo/${todoItem.id}`, todoItem, { observe: 'response'});
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.apiUri}/todolist/${id}`);
+    return this.http.delete(`${this.apiUri}/todo/${id}`);
   }
 }

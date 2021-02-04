@@ -7,7 +7,7 @@
         <i class="fas fa-sort-amount-down-alt mr-2" *ngIf="sortOptions[i].sort === 'asc'"></i>
         <i class="fas fa-sort-amount-down mr-2" *ngIf="sortOptions[i].sort === 'desc'"></i>
       </th>
-      <th class="text-center" *ngIf="activeDeactive">فعال/غیرفعال</th>
+      <th class="text-center" *ngIf="activeDeactive()">فعال/غیرفعال</th>
       <th class="text-center">ویرایش - حذف</th>
     </tr>
   </thead>
@@ -17,7 +17,7 @@
       <td *ngFor="let f of fieldNames">
         <input type="text" class="form-control form-control-sm" placeholder="جستجو">
       </td>
-      <td *ngIf="activeDeactive"></td>
+      <td *ngIf="activeDeactive()"></td>
       <td></td>
     </tr>
     <ng-template [ngIf]="!loading && records.length !== 0">
@@ -26,12 +26,12 @@
         <td *ngFor="let field of recordFields(record)">
           {{ field }}
         </td>
-        <td *ngIf="activeDeactive">
+        <td *ngIf="activeDeactive()">
           <div class="d-flex justify-content-center align-items-center">
             <input type="checkbox" class="slide-toggle" title="فعال/غیر فعال" [checked]="record.active" (change)="toggleActive(i)">
           </div>
         </td>
-        <td class="py-2">
+        <td class="py-2 edit">
           <div class="d-flex justify-content-center align-items-center">
             <button class="btn btn-sm btn-warning ml-2" (click)="edit(i)">
               ویرایش
