@@ -15,29 +15,33 @@ export class ProductsComponent implements OnInit {
     {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'گوشی موبایل', stock: 24, active: true},
     {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', category: 'لباس مردانه', price: 85000, stock: 13, active: true}
   ];
-  filters = [
-    {name: 'none'},
-    {brand: 'none'},
-    {price: 'none'},
-    {category: 'none'},
-    {stock: 'none'}
+
+  fields = [
+    'نام',
+    'برند',
+    'قیمت (تومان)',
+    'دسته بندی',
+    'موجود'
   ];
 
-  shiftFilter(current: string) {
-    const types = ['none', 'asc', 'desc'];
-    if (current === 'none') return types[1];
-    if (current === 'asc') return types[2];
-    if (current === 'desc') return types[0];
-  }
+  sortOptions = [
+    {name: 'name', sort: 'asc'},
+    {name: 'brand', sort: 'none'},
+    {name: 'price', sort: 'none'},
+    {name: 'category', sort: 'none'},
+    {name: 'stock', sort: 'none'}
+  ];
 
   showSearchField = false;
   loading = false;
+  loadingFailed = false;
+  searchFormStatus = 'clean';
 
-  activeDeactive: boolean = false;
+  activeDeactive: boolean = true;
 
   constructor(private dialog: MatDialog) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   openModal(edit?:number) {
     const dialogRef = this.dialog.open(ProductsModalComponent, {
@@ -54,11 +58,12 @@ export class ProductsComponent implements OnInit {
     this.showSearchField = !this.showSearchField;
   }
 
-  toggleSortFor(item: string) {
-    this.filters.forEach(x => {
-      if (x.hasOwnProperty(item))
-        x[item] = this.shiftFilter(x[item]);
-    });
-  }
+  onEditProduct(index: number) {}
+
+  onRemoveProduct(index: number) {}
+
+  onActiveDeactive(index: number) {}
+
+  onSortChange(index: number) {}
 
 }

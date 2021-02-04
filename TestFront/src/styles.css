@@ -7,14 +7,13 @@ html, body { height: 100%; direction: rtl; text-align: right; }
 body { margin: 0; font-family: Vazir; }
 
 .card { box-shadow: 3px 0 20px 8px #ccc; }
-table { font-size: .85rem; }
 
 /* Slide Toggle (Checkbox) Styling */
 
 .slide-toggle {
     position: relative;
-    width: 56px;
-    height: 28px;
+    width: 54px;
+    height: 27px;
     appearance: none;
     background: #c6c6c6;
     outline: none;
@@ -28,8 +27,8 @@ table { font-size: .85rem; }
     .slide-toggle:before {
     content: '';
     position: absolute;
-    width: 28px;
-    height:28px;
+    width: 27px;
+    height:27px;
     border-radius: 20px;
     top: 0;
     left: 0;
@@ -39,11 +38,7 @@ table { font-size: .85rem; }
     transition: .25s;
 }
 
-.slide-toggle:checked:before { left: 28px; }
+.slide-toggle:checked:before { left: 27px; }
 
 .slide-toggle:hover { cursor: pointer; }
 
-.btn-sm {
-    padding: .22rem 1rem;
-    border-radius: 20px;
-}
