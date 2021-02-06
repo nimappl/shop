@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+@import './assets/fonts/Material_Icons/material-icons.css';
+@import './assets/fonts/Roboto/Roboto.css';
 @import './assets/fonts/Vazir/Vazir.css';
 
 html, body { height: 100%; direction: rtl; text-align: right; }

@@ -51,7 +51,7 @@ export class DataTableComponent implements OnInit {
   }
 
   remove(index: number) {
-    this.removeItem.emit(this.records[index]);
+    this.removeItem.emit(index);
   }
 
   toggleActive(index: number) {

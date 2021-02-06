@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoriesModalComponent } from './categories-modal/categories-modal.component';
 import { CategoryService } from '../services/category.service';
 import { Category } from "../models/category";
+import { Filter } from "../models/filter";
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-categories',
@@ -36,23 +38,24 @@ export class CategoriesComponent implements OnInit {
     this.catSrv.get().subscribe(res => {
       this.loading = false;
       this.categories = res;
-      this.categories.forEach(cat => {
-        delete cat.product;
-      });
     }, err => {
       this.loading = false;
       this.loadingFailed = true;
     });
   }
 
-  openModal(edit?:number) {
+  openModal(edit?: Category) {
+    let data: Category;
+    if (edit) data = edit; else data = new Category();
+  
     const dialogRef = this.dialog.open(CategoriesModalComponent, {
       width: '650px',
-      data: 'pox'
+      direction: 'rtl',
+      data: data
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('dialog closed');
+      this.fetch();
     });
   }
 
@@ -60,11 +63,29 @@ export class CategoriesComponent implements OnInit {
     this.showSearchField = !this.showSearchField;
   }
 
-  search() {}
+  search(filters: Filter[]) {}
 
-  onEditCategory(index: number) {}
-
-  onRemoveCategory(index: number) {}
+  onRemoveCategory(index: number) {
+    swal({
+      title: 'حذف',
+      text: `دسته بندی ${this.categories[index].name} حذف خواهد شد`,
+      icon: 'warning',
+      buttons: ['بازگشت', 'ادامه'],
+      dangerMode: true
+    }).then(deleteConfirm => {
+      if (deleteConfirm) {
+        this.loading = true;
+        this.catSrv.delete(this.categories[index].id).subscribe(res => {
+          this.loading = false;
+          swal({title: 'موفق', text: `دسته بندی ${this.categories[index].name} با موفقیت حذف شد.`, icon: 'success'});
+          this.fetch();
+        }, err => {
+          this.loading = false;
+          swal({title: 'نا موفق', icon: 'error'});
+        });
+      }
+    });
+  }
 
   onSortChange(index: number) {}
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductsModalComponent } from './products-modal/products-modal.component';
+import { Filter } from "../models/filter";
 
 @Component({
   selector: 'app-products',
@@ -58,7 +59,7 @@ export class ProductsComponent implements OnInit {
     this.showSearchField = !this.showSearchField;
   }
 
-  search() {}
+  search(filters: Filter[]) {}
   
   onRemoveProduct(index: number) {}
 
