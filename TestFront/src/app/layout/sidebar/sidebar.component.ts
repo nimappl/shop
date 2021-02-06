@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from "@angular/common";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,13 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  dropdownState = false;
+  warehouseDrpState: boolean;
 
-  constructor() { }
+  constructor(private location: Location,
+              private router: Router) {}
 
-  ngOnInit(): void { }
-  
+  ngOnInit(): void {
+    if (location.pathname === '/products' || location.pathname === '/categories') {
+      this.warehouseDrpState = true;
+    } else {
+      this.warehouseDrpState = false;
+    }
+  }
+
   dropdownToggle() {
-    this.dropdownState = !this.dropdownState;
+    this.warehouseDrpState = !this.warehouseDrpState;
   }
 }
