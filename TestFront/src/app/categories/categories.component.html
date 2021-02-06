@@ -22,10 +22,10 @@
         [loadingFailed]="loadingFailed"
         (editItem)="openModal($event)"
         (removeItem)="onRemoveCategory($event)"
+        (activeChanged)="onToggleStatus($event)"
         (sortChanged)="onSortChange($event)"
         (filtersChanged)="search($event)">
       </app-data-table>
     </div>
     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
   </div>
-  

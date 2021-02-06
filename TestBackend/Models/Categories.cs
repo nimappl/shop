@@ -7,14 +7,15 @@ using System.Collections.Generic;
 
 namespace TestBackend.Models
 {
-    public partial class Product
+    public partial class Category
     {
+        public Category()
+        {
+            Products = new HashSet<Product>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Brand { get; set; }
-        public int? Category { get; set; }
-        public long? Price { get; set; }
-        public int? Stock { get; set; }
         public bool Active { get; set; }
         public DateTime? Cdate { get; set; }
         public int? CuserId { get; set; }
@@ -25,6 +26,6 @@ namespace TestBackend.Models
         public DateTime? DaDate { get; set; }
         public int? DaUserId { get; set; }
 
-        public virtual Category CategoryNavigation { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

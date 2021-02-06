@@ -26,9 +26,9 @@
         <td *ngFor="let field of recordFields(record)">
           {{ field }}
         </td>
-        <td *ngIf="activeDeactive()">
+        <td class="status" *ngIf="activeDeactive()">
           <div class="d-flex justify-content-center align-items-center">
-            <input type="checkbox" class="slide-toggle" title="فعال/غیر فعال" [checked]="record.active" (change)="toggleActive(i)">
+            <input type="checkbox" class="slide-toggle" title="فعال/غیر فعال" [(ngModel)]="record.active" (change)="toggleActive(i)">
           </div>
         </td>
         <td class="py-2 edit">

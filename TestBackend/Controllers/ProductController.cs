@@ -24,14 +24,14 @@ namespace TestBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Product.ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
         // GET: api/ProductList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(long id)
         {
-            var todo = await _context.Product.FindAsync(id);
+            var todo = await _context.Products.FindAsync(id);
 
             if (todo == null)
             {
@@ -79,7 +79,7 @@ namespace TestBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct(Product todo)
         {
-            _context.Product.Add(todo);
+            _context.Products.Add(todo);
             await _context.SaveChangesAsync();
 
             // return CreatedAtAction("GetProductItem", new { id = todo.Id }, todo);
@@ -90,13 +90,13 @@ namespace TestBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var todo = await _context.Product.FindAsync(id);
+            var todo = await _context.Products.FindAsync(id);
             if (todo == null)
             {
                 return NotFound();
             }
 
-            _context.Product.Remove(todo);
+            _context.Products.Remove(todo);
             await _context.SaveChangesAsync();
 
             return todo;
@@ -104,7 +104,7 @@ namespace TestBackend.Controllers
 
         private bool ProductExists(long id)
         {
-            return _context.Product.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

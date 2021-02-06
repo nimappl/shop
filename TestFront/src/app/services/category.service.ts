@@ -15,11 +15,11 @@ export class CategoryService {
   }
 
   create(category: Category) {
-    return this.http.post(`${this.apiUri}/category`, category, { observe: 'response'});
+    return this.http.post(`${this.apiUri}/category`, category);
   }
 
   update(category: Category) {
-    return this.http.put(`${this.apiUri}/category/${category.id}`, category, { observe: 'response'});
+    return this.http.put(`${this.apiUri}/category/${category.id}`, category);
   }
 
   delete(id: number) {

@@ -22,13 +22,11 @@ export class DataTableComponent implements OnInit {
   activeDeactive(): boolean {
     if (this.records.length > 0 && this.records[0].hasOwnProperty('active'))
       return true;
-      
+
     return false;
   }
 
-  ngOnInit(): void {
-      
-  }
+  ngOnInit(): void {}
 
   toggleSearch() {
     this.searchField = !this.searchField;

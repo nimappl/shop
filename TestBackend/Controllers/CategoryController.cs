@@ -25,14 +25,14 @@ namespace TestBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
         {
-            return await _context.Category.Select(x => ConvertToDTO(x)).ToListAsync();
+            return await _context.Categories.Select(x => ConvertToDTO(x)).ToListAsync();
         }
 
         // GET: api/CategoryList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
-            var category = await _context.Category.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
             if (category == null)
             {
@@ -53,13 +53,14 @@ namespace TestBackend.Controllers
                 return BadRequest();
             }
 
-            var category = await _context.Category.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
             if(category == null)
             {
                 return NotFound();
             }
 
             category.Name = categoryDTO.Name;
+            category.Active = categoryDTO.Active;
 
             try
             {
@@ -83,7 +84,7 @@ namespace TestBackend.Controllers
             {
                 Name = categoryDTO.Name
             };
-            _context.Category.Add(category);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
             // return CreatedAtAction("GetCategoryItem", new { id = todo.Id }, todo);
@@ -94,13 +95,13 @@ namespace TestBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
-            var todo = await _context.Category.FindAsync(id);
+            var todo = await _context.Categories.FindAsync(id);
             if (todo == null)
             {
                 return NotFound();
             }
 
-            _context.Category.Remove(todo);
+            _context.Categories.Remove(todo);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -108,14 +109,15 @@ namespace TestBackend.Controllers
 
         private bool CategoryExists(long id)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
 
         private static CategoryDTO ConvertToDTO(Category cat) =>
         new CategoryDTO
         {
             Id = cat.Id,
-            Name = cat.Name
+            Name = cat.Name,
+            Active = cat.Active
         };
     }
 }

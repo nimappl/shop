@@ -15,8 +15,8 @@ body { margin: 0; font-family: Vazir; }
 
 .slide-toggle {
     position: relative;
-    width: 54px;
-    height: 27px;
+    width: 48px;
+    height: 24px;
     appearance: none;
     background: #c6c6c6;
     outline: none;
@@ -30,8 +30,8 @@ body { margin: 0; font-family: Vazir; }
     .slide-toggle:before {
     content: '';
     position: absolute;
-    width: 27px;
-    height:27px;
+    width: 24px;
+    height:24px;
     border-radius: 20px;
     top: 0;
     left: 0;
@@ -41,7 +41,7 @@ body { margin: 0; font-family: Vazir; }
     transition: .25s;
 }
 
-.slide-toggle:checked:before { left: 27px; }
+.slide-toggle:checked:before { left: 24px; }
 
 .slide-toggle:hover { cursor: pointer; }
 

@@ -47,7 +47,7 @@ export class CategoriesComponent implements OnInit {
   openModal(edit?: Category) {
     let data: Category;
     if (edit) data = edit; else data = new Category();
-  
+
     const dialogRef = this.dialog.open(CategoriesModalComponent, {
       width: '650px',
       direction: 'rtl',
@@ -81,9 +81,20 @@ export class CategoriesComponent implements OnInit {
           this.fetch();
         }, err => {
           this.loading = false;
-          swal({title: 'نا موفق', icon: 'error'});
+          swal({title: 'ناموفق', icon: 'error'});
         });
       }
+    });
+  }
+
+  onToggleStatus(index: number) {
+    this.catSrv.update(this.categories[index]).subscribe(res => {
+      swal({title: 'موفق', text: `دسته بندی ${this.categories[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
+      console.log(this.categories[index]);
+    }, err => {
+      this.categories[index].active = !this.categories[index].active;
+      swal({title: 'ناموفق', icon: 'error'});
+      console.log(err);
     });
   }
 

@@ -57,7 +57,6 @@ export class TodoListComponent implements OnInit {
     this.todolistSrv.update(todo).subscribe(res => {
       if (!res.ok) {
         todo.isComplete = !todo.isComplete;
-        console.error('res');
       }
       this.isFetching = false;
     });
