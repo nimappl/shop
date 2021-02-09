@@ -12,6 +12,8 @@ export class CategoriesModalComponent implements OnInit {
   mode: string;
   title: string;
   reachingOut = false;
+  submitted = false;
+
   constructor(public dialogRef: MatDialogRef<CategoriesModalComponent>,
               @Inject(MAT_DIALOG_DATA) public data,
               public catSrv: CategoryService) { }
@@ -27,6 +29,7 @@ export class CategoriesModalComponent implements OnInit {
     if (this.mode === 'new') {
       this.catSrv.create(this.data).subscribe(res => {
         this.reachingOut = false;
+        this.submitted = true;
         swal({title: 'موفق', text: 'اطلاعات با موفقیت ثبت شد', icon: 'success'});
       }, err => {
         this.reachingOut = false;
@@ -35,6 +38,7 @@ export class CategoriesModalComponent implements OnInit {
     } else {
       this.catSrv.update(this.data).subscribe(res => {
         this.reachingOut = false;
+        this.submitted = true;
         swal({title: 'موفق', text: 'اطلاعات با موفقیت ثبت شد', icon: 'success'});
       }, err => {
         this.reachingOut = false;

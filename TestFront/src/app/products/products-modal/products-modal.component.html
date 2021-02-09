@@ -1,1 +1,54 @@
-<p>products-modal works!</p>
+<h1>{{ title }}</h1>
+<form #f="ngForm" (ngSubmit)="submit()">
+  <div class="row">
+    <div class="col-sm-6">
+      <mat-form-field appearance="fill">
+        <mat-label>نام</mat-label>
+        <input type="text" name="name" [(ngModel)]="data.name" matNativeControl>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>برند</mat-label>
+        <input type="text" name="brand" [(ngModel)]="data.brand" matNativeControl>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>قیمت (تومان)</mat-label>
+        <input type="text" name="price" [(ngModel)]="data.price" matNativeControl>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-6">
+      <mat-form-field appearance="fill">
+        <mat-label>دسته بندی</mat-label>
+        <mat-select [(value)]="categories[0].id" (openedChange)="toggleCatSearch($event)">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>جستجو</mat-label>
+            <mat-icon matPrefix fontSet="fas" fontIcon="fa-search" class="ml-1"></mat-icon>
+            <input type="text" matNativeControl #search>
+          </mat-form-field>
+          <mat-option *ngFor="let cat of categories" [value]="cat.id" style="font-family: Vazir">{{ cat.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>موجود</mat-label>
+        <input type="text" name="stock" [(ngModel)]="data.stock" matNativeControl>
+      </mat-form-field>
+      <mat-checkbox [(ngModel)]="data.active" name="active" color="primary" class="my-4 d-block">فعال</mat-checkbox>
+    </div>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="fill">
+      <mat-label>توضیحات</mat-label>
+      <textarea matNativeControl name="description" rows="3" [(ngModel)]="data.description"></textarea>
+    </mat-form-field>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-secondary ml-2" [mat-dialog-close]="submitted">بستن</button>
+    <button class="btn btn-primary d-flex" type="submit">
+      <div>ثبت</div>
+      <app-loading-spinner-bars
+      color="white"
+      style="height: 25px"
+      class="mr-2"
+      *ngIf="reachingOut"></app-loading-spinner-bars>
+    </button>
+  </div>
+</form>

@@ -1,0 +1,15 @@
+h1 { font-size: 30px; font-weight: bold; margin-bottom: 2rem; }
+
+:host ::ng-deep .mat-form-field,
+:host ::ng-deep .mat-form-select,
+:host ::ng-deep .mat-select-value-text,
+:host ::ng-deep .mat-checkbox-label
+ { font-family: Vazir; width: 100%; }
+
+:host ::ng-deep .mat-form-select { font-family: Vazir; width: 100%; }
+
+.search-field { font-family: Vazir; width: 100%; padding: 5px;}
+.search-field ::ng-deep .mat-form-field-wrapper { padding-bottom: 0; }
+/* .search-field ::ng-deep .mat-form-field-infix { padding: 10px 0; border-top: 6px; }
+.search-field ::ng-deep .mat-form-field-label { margin-bottom: 4px;}
+.search-field ::ng-deep .mat-form-field-label-wrapper { padding-top: 6px; } */

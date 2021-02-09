@@ -54,8 +54,13 @@ export class CategoriesComponent implements OnInit {
       data: data
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.fetch();
+    dialogRef.afterClosed().subscribe(submitted => {
+      if (submitted) {
+        this.fetch();
+        console.log('form was submitted');
+      } else {
+        console.log(submitted);
+      }
     });
   }
 

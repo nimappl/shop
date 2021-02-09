@@ -44,14 +44,21 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  openModal(edit?:number) {
+  openModal(edit?: Product) {
+    let data: Product;
+    if (edit) data = edit; else data = new Product();
+
     const dialogRef = this.dialog.open(ProductsModalComponent, {
-      width: '650px',
-      data: 'pox'
+      width: '800px',
+      direction: 'rtl',
+      data: data
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('dialog closed');
+    dialogRef.afterClosed().subscribe(submitted => {
+      if (submitted)
+        console.log('form was submitted');
+      else
+        console.log('form was not submitted');
     });
   }
 
