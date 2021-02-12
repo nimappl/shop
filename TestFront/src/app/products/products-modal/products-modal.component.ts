@@ -12,7 +12,7 @@ export class ProductsModalComponent implements OnInit {
   mode: string;
   reachingOut = false;
   submitted = false;
-  
+
   categories = [
     { name: 'تلفن همراه', id: 1 },
     { name: 'لباس مردانه', id: 2 },
@@ -28,7 +28,7 @@ export class ProductsModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.mode = this.data.name === undefined ? 'edit' : 'new';
-    this.title = this.mode === 'edit' ? 'ویرایش' : 'جدید';
+    this.title = this.mode === 'edit' ? 'جدید' : 'ویرایش';
   }
 
   toggleCatSearch(open: boolean) {
