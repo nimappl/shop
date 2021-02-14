@@ -15,9 +15,12 @@ export class CategoriesComponent implements OnInit {
 
   categories: Category[] = [];
 
-  fields = ['نام'];
+  columns = [{name: 'name', title: 'نام'}];
 
-  sortOptions = [{name: 'name', sort: 'none'}];
+  sortOptions = [
+    {name: 'id', sort: 'asc'},
+    {name: 'name', sort: 'none'}
+  ];
 
   showSearchField = false;
   loading = false;

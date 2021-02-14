@@ -22,20 +22,21 @@ export class ProductsComponent implements OnInit {
   // ];
   products: Product[] = [];
 
-  fields = [
-    'نام',
-    'برند',
-    'قیمت (تومان)',
-    'موجود',
-    'دسته بندی'
+  columns = [
+    {name: 'name', title: 'نام'},
+    {name: 'brand', title: 'برند '},
+    {name: 'price', title: 'قیمت'},
+    {name: 'stock', title: 'موجود'},
+    {name: 'category', title: 'دسته بندی'}
   ];
 
   sortOptions = [
+    {name: 'id', sort: 'none'},
     {name: 'name', sort: 'asc'},
     {name: 'brand', sort: 'none'},
     {name: 'price', sort: 'none'},
-    {name: 'category', sort: 'none'},
-    {name: 'stock', sort: 'none'}
+    {name: 'stock', sort: 'none'},
+    {name: 'category', sort: 'none'}
   ];
 
   showSearchField = false;

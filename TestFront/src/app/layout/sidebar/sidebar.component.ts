@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from "rxjs/internal/operators";
 
 @Component({
   selector: 'app-sidebar',
@@ -14,11 +15,13 @@ export class SidebarComponent implements OnInit {
               private router: Router) {}
 
   ngOnInit(): void {
-    if (location.pathname === '/products' || location.pathname === '/categories') {
-      this.warehouseDrpState = true;
-    } else {
-      this.warehouseDrpState = false;
-    }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        if (e.urlAfterRedirects === '/products' || e.urlAfterRedirects === '/categories')
+        this.warehouseDrpState = true;
+      else
+        this.warehouseDrpState = false;
+      });
   }
 
   dropdownToggle() {

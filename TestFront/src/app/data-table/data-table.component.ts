@@ -7,7 +7,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 })
 export class DataTableComponent implements OnInit {
   @Input() records: any[];
-  @Input() fieldNames: string[];
+  @Input() columns: any[];
   @Input() sortOptions: any[];
   @Input() searchField: boolean;
   @Input() loading: boolean;
@@ -32,14 +32,18 @@ export class DataTableComponent implements OnInit {
     this.searchField = !this.searchField;
   }
 
-  toggleSortFor(index: number) {
-    if (this.sortOptions[index].sort === 'none') {
-      this.sortOptions[index].sort = 'asc';
-    } else if (this.sortOptions[index].sort === 'desc') {
-      this.sortOptions[index].sort = 'none';
-    } else if (this.sortOptions[index].sort === 'asc') {
-      this.sortOptions[index].sort = 'desc';
-    }
+  toggleSortFor(column: string) {
+    this.sortOptions.forEach(thing => {
+      if (thing.name === column) {
+        if (thing.sort === 'none') {
+        thing.sort = 'asc';
+        } else if (thing.sort === 'desc') {
+          thing.sort = 'none';
+        } else if (thing.sort === 'asc') {
+          thing.sort = 'desc';
+        }
+      }
+    });
 
     this.sortChanged.emit(this.sortOptions);
   }
