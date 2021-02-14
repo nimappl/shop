@@ -85,7 +85,6 @@ namespace TestBackend.Controllers
         {
             Product product = new Product
             {
-                Id = dto.Id,
                 Name = dto.Name,
                 Brand = dto.Brand,
                 CategoryId = dto.CategoryId,

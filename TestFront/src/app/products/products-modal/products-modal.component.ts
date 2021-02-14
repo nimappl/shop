@@ -47,7 +47,7 @@ export class ProductsModalComponent implements OnInit {
     if (this.mode === 'new') {
       this.productSRv.create(this.data).subscribe(res => {
         this.reachingOut = false;
-        swal({title: 'موفق', text: 'اطلاعات با موفقیت ثبت شد', icon: 'success'});
+        swal({title: 'موفق', text: `محصول جدید با موفقیت اضافه گردید`, icon: 'success'});
       }, err => {
         this.reachingOut = false;
         swal({title: 'ناموفق', icon: 'error'});
@@ -55,7 +55,7 @@ export class ProductsModalComponent implements OnInit {
     } else {
       this.productSRv.update(this.data).subscribe(res => {
         this.reachingOut = false;
-        swal({title: 'موفق', text: 'اطلاعات با موفقیت ثبت شد', icon: 'success'});
+        swal({title: 'موفق', text: `تغییرات با موفقیت ثبت شد`, icon: 'success'});
       }, err => {
         this.reachingOut = false;
         swal({title: 'ناموفق', icon: 'error'});

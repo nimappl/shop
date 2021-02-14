@@ -57,10 +57,10 @@ export class ProductsComponent implements OnInit {
     this.loading = true;
     this.productSrv.get().subscribe(res => {
       this.products = res;
+      this.loading = false;
       this.products.forEach(p => {
         this.catSrv.getById(p.categoryId).subscribe(cat => {
           p.category = cat.name;
-          this.loading = false;
         });
       });
     }, err => {
@@ -76,6 +76,7 @@ export class ProductsComponent implements OnInit {
     const dialogRef = this.dialog.open(ProductsModalComponent, {
       width: '800px',
       direction: 'rtl',
+      disableClose: true,
       data: data
     });
 
@@ -90,7 +91,7 @@ export class ProductsComponent implements OnInit {
   }
 
   search(filters: Filter[]) {}
-  
+
   onRemoveProduct(index: number) {
     swal({
       title: 'حذف',

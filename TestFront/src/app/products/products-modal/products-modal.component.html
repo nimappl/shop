@@ -4,16 +4,17 @@
     <div class="col-sm-6">
       <mat-form-field appearance="fill">
         <mat-label>نام</mat-label>
-        <input type="text" name="name" [(ngModel)]="data.name" matNativeControl>
+        <input type="text" name="name" autocomplete="off" [(ngModel)]="data.name" matNativeControl>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>برند</mat-label>
-        <input type="text" name="brand" [(ngModel)]="data.brand" matNativeControl>
+        <input type="text" name="brand" autocomplete="off" [(ngModel)]="data.brand" matNativeControl>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>قیمت (تومان)</mat-label>
-        <input type="text" name="price" [(ngModel)]="data.price" matNativeControl>
+        <input type="number" name="price" autocomplete="off" [(ngModel)]="data.price" matNativeControl>
       </mat-form-field>
+      <mat-checkbox [(ngModel)]="data.active" name="active" color="primary" class="my-2 pr-2 d-block">فعال</mat-checkbox>
     </div>
     <div class="col-sm-6">
       <mat-form-field appearance="fill">
@@ -22,23 +23,20 @@
           <mat-form-field appearance="outline" class="search-field">
             <mat-label>جستجو</mat-label>
             <mat-icon matPrefix fontSet="fas" fontIcon="fa-search" class="ml-1"></mat-icon>
-            <input type="text" matNativeControl #search>
+            <input type="text" autocomplete="off" matNativeControl #search>
           </mat-form-field>
           <mat-option *ngFor="let cat of categories" [value]="cat.id" style="font-family: Vazir">{{ cat.name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>موجود</mat-label>
-        <input type="text" name="stock" [(ngModel)]="data.stock" matNativeControl>
+        <input type="number" name="stock" autocomplete="off" [(ngModel)]="data.stock" matNativeControl>
       </mat-form-field>
-      <mat-checkbox [(ngModel)]="data.active" name="active" color="primary" class="my-4 d-block">فعال</mat-checkbox>
+      <mat-form-field appearance="fill">
+        <mat-label>توضیحات</mat-label>
+        <textarea matNativeControl name="description" rows="5" [(ngModel)]="data.description"></textarea>
+      </mat-form-field>
     </div>
-  </div>
-  <div class="row">
-    <mat-form-field appearance="fill">
-      <mat-label>توضیحات</mat-label>
-      <textarea matNativeControl name="description" rows="3" [(ngModel)]="data.description"></textarea>
-    </mat-form-field>
   </div>
   <div class="d-flex justify-content-end">
     <button class="btn btn-secondary ml-2" [mat-dialog-close]="submitted">بستن</button>
