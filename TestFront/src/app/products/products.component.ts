@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../models/product';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductsModalComponent } from './products-modal/products-modal.component';
+
+import swal from "sweetalert";
+import { Product } from '../models/product';
+import { ProductService } from "../services/product.service";
 import { Filter } from "../models/filter";
+import { CategoryService } from '../services/category.service';
 
 @Component({
   selector: 'app-products',
@@ -11,18 +15,19 @@ import { Filter } from "../models/filter";
 })
 export class ProductsComponent implements OnInit {
 
-  products: Product[] = [
-    {name: 'اچ تی سی 10', brand: 'HTC', price: 1500000, category: 'گوشی موبایل', stock: 5, active: false},
-    {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'گوشی موبایل', stock: 24, active: true},
-    {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', price: 85000, category: 'لباس مردانه', stock: 13, active: true}
-  ];
+  // products: Product[] = [
+  //   {name: 'اچ تی سی 10', brand: 'HTC', price: 1500000, category: 'تلفن همراه', stock: 5, active: false},
+  //   {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'تلفن همراه', stock: 24, active: true},
+  //   {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', price: 85000, category: 'لباس مردانه', stock: 13, active: true}
+  // ];
+  products: Product[] = [];
 
   fields = [
     'نام',
     'برند',
     'قیمت (تومان)',
-    'دسته بندی',
-    'موجود'
+    'موجود',
+    'دسته بندی'
   ];
 
   sortOptions = [
@@ -40,9 +45,29 @@ export class ProductsComponent implements OnInit {
 
   activeDeactive: boolean = true;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+              private productSrv: ProductService,
+              private catSrv: CategoryService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fetch();
+  }
+
+  fetch() {
+    this.loading = true;
+    this.productSrv.get().subscribe(res => {
+      this.products = res;
+      this.products.forEach(p => {
+        this.catSrv.getById(p.categoryId).subscribe(cat => {
+          p.category = cat.name;
+          this.loading = false;
+        });
+      });
+    }, err => {
+      this.loading = false;
+      this.loadingFailed = true;
+    });
+  }
 
   openModal(edit?: Product) {
     let data: Product;
@@ -56,9 +81,7 @@ export class ProductsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(submitted => {
       if (submitted)
-        console.log('form was submitted');
-      else
-        console.log('form was not submitted');
+        this.fetch();
     });
   }
 
@@ -68,9 +91,36 @@ export class ProductsComponent implements OnInit {
 
   search(filters: Filter[]) {}
   
-  onRemoveProduct(index: number) {}
+  onRemoveProduct(index: number) {
+    swal({
+      title: 'حذف',
+      text: `آیا از حذف ${this.products[index].name} اطمینان دارید؟`,
+      icon: 'warning',
+      buttons: ['بازگشت', 'ادامه'],
+      dangerMode: true
+    }).then(deleteConfirm => {
+      if (deleteConfirm) {
+        this.loading = true;
+        this.productSrv.delete(this.products[index].id).subscribe(res => {
+          this.loading = false;
+          swal({title: 'موفق', text: `${this.products[index].name} با موفقیت حذف شد.`, icon: 'success'});
+          this.fetch();
+        }, err => {
+          this.loading = false;
+          swal({title: 'ناموفق', icon: 'error'});
+        });
+      }
+    });
+  }
 
-  onActiveDeactive(index: number) {}
+  onActiveDeactive(index: number) {
+    this.productSrv.update(this.products[index]).subscribe(res => {
+      swal({title: 'موفق', text: `${this.products[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
+    }, err => {
+      this.products[index].active = !this.products[index].active;
+      swal({title: 'ناموفق', icon: 'error'});
+    });
+  }
 
   onSortChange(index: number) {}
 

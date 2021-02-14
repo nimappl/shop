@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Models;
+using TestBackend.DTOs;
 
 namespace TestBackend.Controllers
 {
@@ -22,89 +23,114 @@ namespace TestBackend.Controllers
 
         // GET: api/ProductList
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.Select(x => ConvertToDTO(x)).ToListAsync();
         }
 
         // GET: api/ProductList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(long id)
         {
-            var todo = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
 
-            if (todo == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return todo;
+            return product;
         }
 
         // PUT: api/Product/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(long id, Product todo)
+        public async Task<IActionResult> UpdateProduct(int id, ProductDTO dto)
         {
-            if (id != todo.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(todo).State = EntityState.Modified;
+            // _context.Entry(product).State = EntityState.Modified;
+            var product = await _context.Products.FindAsync(id);
+            if (product == null )
+                return NotFound();
+
+            product.Name = dto.Name;
+            product.CategoryId = dto.CategoryId;
+            product.Brand = dto.Brand;
+            product.Price = dto.Price;
+            product.Stock = dto.Stock;
+            product.Active = dto.Active;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException) when (!ProductExists(id))
             {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return Ok();
+            return NoContent();
         }
 
         // POST: api/Product
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct(Product todo)
+        public async Task<ActionResult<Product>> CreateProduct(ProductDTO dto)
         {
-            _context.Products.Add(todo);
+            Product product = new Product
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Brand = dto.Brand,
+                CategoryId = dto.CategoryId,
+                Price = dto.Price,
+                Stock = dto.Stock,
+                Active = dto.Active
+            };
+            _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            // return CreatedAtAction("GetProductItem", new { id = todo.Id }, todo);
-            return CreatedAtAction(nameof(GetProduct), new { id = todo.Id }, todo);
+            // return CreatedAtAction("GetProductItem", new { id = product.Id }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }
 
         // DELETE: api/Product/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var todo = await _context.Products.FindAsync(id);
-            if (todo == null)
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(todo);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
 
-            return todo;
+            return product;
         }
 
         private bool ProductExists(long id)
         {
             return _context.Products.Any(e => e.Id == id);
         }
+
+        private static ProductDTO ConvertToDTO(Product product) =>
+            new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Brand = product.Brand,
+                CategoryId = product.CategoryId,
+                Price = product.Price,
+                Stock = product.Stock,
+                Active = product.Active
+            };
     }
 }

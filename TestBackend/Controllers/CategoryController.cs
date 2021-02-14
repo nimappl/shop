@@ -87,7 +87,7 @@ namespace TestBackend.Controllers
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            // return CreatedAtAction("GetCategoryItem", new { id = todo.Id }, todo);
+            // return CreatedAtAction("GetCategoryItem", new { id = category.Id }, category);
             return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
         }
 
@@ -95,13 +95,13 @@ namespace TestBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
-            var todo = await _context.Categories.FindAsync(id);
-            if (todo == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(todo);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();

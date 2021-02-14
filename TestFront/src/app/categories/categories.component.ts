@@ -95,11 +95,9 @@ export class CategoriesComponent implements OnInit {
   onToggleStatus(index: number) {
     this.catSrv.update(this.categories[index]).subscribe(res => {
       swal({title: 'موفق', text: `دسته بندی ${this.categories[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
-      console.log(this.categories[index]);
     }, err => {
       this.categories[index].active = !this.categories[index].active;
       swal({title: 'ناموفق', icon: 'error'});
-      console.log(err);
     });
   }
 

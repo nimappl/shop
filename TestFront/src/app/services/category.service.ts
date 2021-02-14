@@ -14,6 +14,10 @@ export class CategoryService {
     return this.http.get<Category[]>(`${this.apiUri}/category`);
   }
 
+  getById(id: number) {
+    return this.http.get<Category>(`${this.apiUri}/category/${id}`);
+  }
+
   create(category: Category) {
     return this.http.post(`${this.apiUri}/category`, category);
   }

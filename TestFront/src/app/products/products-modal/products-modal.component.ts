@@ -1,6 +1,10 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Product } from 'src/app/models/product';
+import { Category } from '../../models/category';
+import { CategoryService } from "../../services/category.service";
+import { Product } from '../../models/product';
+import { ProductService } from '../../services/product.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-products-modal',
@@ -12,23 +16,23 @@ export class ProductsModalComponent implements OnInit {
   mode: string;
   reachingOut = false;
   submitted = false;
-
-  categories = [
-    { name: 'تلفن همراه', id: 1 },
-    { name: 'لباس مردانه', id: 2 },
-    { name: 'قطعات کامپیوتر', id: 3 }
-  ];
+  categories: Category[] = [];
 
   @ViewChild('search') searchField: ElementRef;
 
   constructor(
     public dialogRef: MatDialogRef<ProductsModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Product
+    @Inject(MAT_DIALOG_DATA) public data: Product,
+    private catSrv: CategoryService,
+    private productSRv: ProductService
   ) {}
 
   ngOnInit(): void {
-    this.mode = this.data.name === undefined ? 'edit' : 'new';
-    this.title = this.mode === 'edit' ? 'جدید' : 'ویرایش';
+    this.mode = this.data.name === undefined ? 'new' : 'edit';
+    this.title = this.mode === 'edit' ? 'ویرایش' : 'جدید';
+    this.catSrv.get().subscribe(res => {
+      this.categories = res;
+    });
   }
 
   toggleCatSearch(open: boolean) {
@@ -38,6 +42,24 @@ export class ProductsModalComponent implements OnInit {
 
   submit() {
     this.submitted = true;
-  }
+    this.reachingOut = true;
 
+    if (this.mode === 'new') {
+      this.productSRv.create(this.data).subscribe(res => {
+        this.reachingOut = false;
+        swal({title: 'موفق', text: 'اطلاعات با موفقیت ثبت شد', icon: 'success'});
+      }, err => {
+        this.reachingOut = false;
+        swal({title: 'ناموفق', icon: 'error'});
+      });
+    } else {
+      this.productSRv.update(this.data).subscribe(res => {
+        this.reachingOut = false;
+        swal({title: 'موفق', text: 'اطلاعات با موفقیت ثبت شد', icon: 'success'});
+      }, err => {
+        this.reachingOut = false;
+        swal({title: 'ناموفق', icon: 'error'});
+      });
+    }
+  }
 }

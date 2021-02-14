@@ -59,7 +59,7 @@ export class DataTableComponent implements OnInit {
   recordFields(record: object) {
     const fields = []
     for (let field in record)
-      if (field !== 'active' && field !== 'id')
+      if (field !== 'active' && !field.includes('id') && !field.includes('Id'))
         fields.push(record[field]);
     return fields;
   }
