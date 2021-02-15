@@ -7,7 +7,7 @@ namespace TestBackend.Services
     {
         Task<ProductDTO> GetById(int id);
         Task<GridData<ProductDTO>> Get();
-        Task AddProduct(ProductDTO category);
+        void AddProduct(ProductDTO category);
         Task UpdateProduct(int id, ProductDTO category);
         Task DeleteProduct(int id);
         bool ProductExists(int id);

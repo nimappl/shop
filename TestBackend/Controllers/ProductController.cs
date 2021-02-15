@@ -15,12 +15,10 @@ namespace TestBackend.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ShopContext _context;
         private readonly IProductService _service;
 
-        public ProductController(ShopContext context, IProductService service)
+        public ProductController(IProductService service)
         {
-            _context = context;
             _service = service;
         }
 
@@ -33,10 +31,10 @@ namespace TestBackend.Controllers
 
         // GET: api/ProductList/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(long id)
+        public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-
+            var product = await _service.GetById(id);
+            
             if (product == null)
             {
                 return NotFound();
@@ -56,23 +54,13 @@ namespace TestBackend.Controllers
                 return BadRequest();
             }
 
-            // _context.Entry(product).State = EntityState.Modified;
-            var product = await _context.Products.FindAsync(id);
-            if (product == null )
-                return NotFound();
-
-            product.Name = dto.Name;
-            product.CategoryId = dto.CategoryId;
-            product.Brand = dto.Brand;
-            product.Price = dto.Price;
-            product.Stock = dto.Stock;
-            product.Active = dto.Active;
+            await _service.UpdateProduct(id, dto);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.Save();
             }
-            catch (DbUpdateConcurrencyException) when (!ProductExists(id))
+            catch (DbUpdateConcurrencyException) when (!_service.ProductExists(id))
             {
                 return NotFound();
             }
@@ -86,53 +74,21 @@ namespace TestBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct(ProductDTO dto)
         {
-            Product product = new Product
-            {
-                Name = dto.Name,
-                Brand = dto.Brand,
-                CategoryId = dto.CategoryId,
-                Price = dto.Price,
-                Stock = dto.Stock,
-                Active = dto.Active
-            };
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            _service.AddProduct(dto);
+            await _service.Save();
 
-            // return CreatedAtAction("GetProductItem", new { id = product.Id }, product);
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            // return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+            return NoContent();
         }
 
         // DELETE: api/Product/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+            await _service.DeleteProduct(id);
+            await _service.Save();
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-
-            return product;
+            return NoContent();
         }
-
-        private bool ProductExists(long id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
-
-        private static ProductDTO ConvertToDTO(Product product) =>
-            new ProductDTO
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Brand = product.Brand,
-                CategoryId = product.CategoryId,
-                Price = product.Price,
-                Stock = product.Stock,
-                Active = product.Active
-            };
     }
 }

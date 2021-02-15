@@ -8,7 +8,7 @@ namespace TestBackend.Services
     {
         Task<CategoryDTO> GetById(int id);
         Task<GridData<CategoryDTO>> Get();
-        Task AddCategory(CategoryDTO category);
+        void AddCategory(CategoryDTO category);
         Task UpdateCategory(int id, CategoryDTO category);
         Task DeleteCategory(int id);
         bool CategoryExists(int id);

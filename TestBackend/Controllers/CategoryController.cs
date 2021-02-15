@@ -16,11 +16,9 @@ namespace TestBackend.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _service;
-        private readonly ShopContext _context;
 
-        public CategoryController(ShopContext context, ICategoryService service)
+        public CategoryController(ICategoryService service)
         {
-            _context = context;
             _service = service;
         }
 
@@ -36,14 +34,14 @@ namespace TestBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _service.GetById(id);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            return ConvertToDTO(category);
+            return category;
         }
 
         // PUT: api/Category/5
@@ -57,20 +55,13 @@ namespace TestBackend.Controllers
                 return BadRequest();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if(category == null)
-            {
-                return NotFound();
-            }
-
-            category.Name = categoryDTO.Name;
-            category.Active = categoryDTO.Active;
+            await _service.UpdateCategory(id, categoryDTO);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.Save();
             }
-            catch (DbUpdateConcurrencyException) when (!CategoryExists(id))
+            catch (DbUpdateConcurrencyException) when (!_service.CategoryExists(id))
             {
                 return NotFound();
             }
@@ -84,44 +75,21 @@ namespace TestBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Category>> CreateCategory(CategoryDTO categoryDTO)
         {
-            var category = new Category()
-            {
-                Name = categoryDTO.Name
-            };
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            _service.AddCategory(categoryDTO);
+            await _service.Save();
 
-            // return CreatedAtAction("GetCategoryItem", new { id = category.Id }, category);
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+            // return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+            return NoContent();
         }
 
         // DELETE: api/Category/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            await _service.DeleteCategory(id);
+            await _service.Save();
 
             return NoContent();
         }
-
-        private bool CategoryExists(long id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
-        }
-
-        private static CategoryDTO ConvertToDTO(Category cat) =>
-        new CategoryDTO
-        {
-            Id = cat.Id,
-            Name = cat.Name,
-            Active = cat.Active
-        };
     }
 }

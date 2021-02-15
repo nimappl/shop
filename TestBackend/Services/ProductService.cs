@@ -13,19 +13,16 @@ namespace TestBackend.Services
         {
             _context = context;
         }
-        public async Task AddProduct(ProductDTO category)
+        public void AddProduct(ProductDTO dto)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public bool ProductExists(int id)
-        {
-            throw new System.NotImplementedException();
+            Product product = DTOConvert.ProductDTOToModel(dto);
+            _context.Add(product);
         }
 
         public async Task DeleteProduct(int id)
         {
-            throw new System.NotImplementedException();
+            var product = await _context.Products.FindAsync(id);
+            _context.Products.Remove(product);
         }
 
         public async Task<GridData<ProductDTO>> Get()
@@ -37,17 +34,28 @@ namespace TestBackend.Services
 
         public async Task<ProductDTO> GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return DTOConvert.ProductModelToDTO(await _context.Products.FindAsync(id));
         }
 
+        public async Task UpdateProduct(int id, ProductDTO dto)
+        {
+            Product product = await _context.Products.FindAsync(id);
+            product.Id = dto.Id;
+            product.Name = dto.Name;
+            product.CategoryId = dto.CategoryId;
+            product.Price = dto.Price;
+            product.Stock = dto.Stock;
+            product.Active = dto.Active;
+        }
+
+        public bool ProductExists(int id)
+        {
+            return _context.Products.Any(p => p.Id == id);
+        }
+        
         public async Task<int> Save()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task UpdateProduct(int id, ProductDTO category)
-        {
-            throw new System.NotImplementedException();
+            return await _context.SaveChangesAsync();
         }
     }
 }

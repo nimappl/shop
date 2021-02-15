@@ -15,10 +15,10 @@ namespace TestBackend.Services
             _context = context;
         }
         
-        public async Task AddCategory(CategoryDTO category)
+        public void AddCategory(CategoryDTO dto)
         {
-            Category cat = DTOConvert.CategoryDTOToModel(category);
-            _context.Categories.Add(cat);
+            Category cat = DTOConvert.CategoryDTOToModel(dto);
+            _context.Categories.AddAsync(cat);
         }
 
         public async Task DeleteCategory(int id)
@@ -37,14 +37,15 @@ namespace TestBackend.Services
 
         public async Task<CategoryDTO> GetById(int id)
         {
-            var cat = await _context.Categories.FindAsync(id);
-            return DTOConvert.CategoryModelToDTO(cat);
+            return DTOConvert.CategoryModelToDTO(await _context.Categories.FindAsync(id));
         }
 
-        public async Task UpdateCategory(int id, CategoryDTO category)
+        public async Task UpdateCategory(int id, CategoryDTO dto)
         {
-            var cat = await _context.Categories.FindAsync(id);
-            cat = DTOConvert.CategoryDTOToModel(category);
+            Category cat = await _context.Categories.FindAsync(id);
+            cat.Id = dto.Id;
+            cat.Name = dto.Name;
+            cat.Active = dto.Active;
         }
 
         public bool CategoryExists(int id)
