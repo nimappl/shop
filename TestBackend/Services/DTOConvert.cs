@@ -1,6 +1,7 @@
 using TestBackend.Models;
+using TestBackend.DTOs;
 
-namespace TestBackend.DTOs
+namespace TestBackend.Services
 {
     public static class DTOConvert
     {
@@ -8,14 +9,16 @@ namespace TestBackend.DTOs
             new CategoryDTO
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                Active = category.Active
             };
         
         public static Category CategoryDTOToModel(CategoryDTO dto) =>
             new Category
             {
                 Id = dto.Id,
-                Name = dto.Name
+                Name = dto.Name,
+                Active = dto.Active
             };
 
         public static ProductDTO ProductModelToDTO(Product product) =>
@@ -26,7 +29,8 @@ namespace TestBackend.DTOs
                 Brand = product.Brand,
                 Price = product.Price,
                 Stock = product.Stock,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
+                Active = product.Active
             };
 
         public static Product ProductDTOToModel(ProductDTO dto) =>
@@ -37,7 +41,8 @@ namespace TestBackend.DTOs
                 Brand = dto.Brand,
                 Price = dto.Price,
                 Stock = dto.Stock,
-                CategoryId = dto.CategoryId
+                CategoryId = dto.CategoryId,
+                Active = dto.Active
             };
     }
 }

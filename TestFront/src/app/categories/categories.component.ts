@@ -4,6 +4,7 @@ import { CategoriesModalComponent } from './categories-modal/categories-modal.co
 import { CategoryService } from '../services/category.service';
 import { Category } from "../models/category";
 import { Filter } from "../models/filter";
+import { GridData } from "../models/GridData";
 import swal from 'sweetalert';
 
 @Component({
@@ -13,7 +14,7 @@ import swal from 'sweetalert';
 })
 export class CategoriesComponent implements OnInit {
 
-  categories: Category[] = [];
+  categories: GridData<Category>;
 
   columns = [{name: 'name', title: 'نام'}];
 
@@ -54,16 +55,13 @@ export class CategoriesComponent implements OnInit {
     const dialogRef = this.dialog.open(CategoriesModalComponent, {
       width: '650px',
       direction: 'rtl',
+      disableClose: true,
       data: data
     });
 
     dialogRef.afterClosed().subscribe(submitted => {
-      if (submitted) {
+      if (submitted)
         this.fetch();
-        console.log('form was submitted');
-      } else {
-        console.log(submitted);
-      }
     });
   }
 
@@ -76,16 +74,16 @@ export class CategoriesComponent implements OnInit {
   onRemoveCategory(index: number) {
     swal({
       title: 'حذف',
-      text: `دسته بندی ${this.categories[index].name} حذف خواهد شد`,
+      text: `دسته بندی ${this.categories.data[index].name} حذف خواهد شد`,
       icon: 'warning',
       buttons: ['بازگشت', 'ادامه'],
       dangerMode: true
     }).then(deleteConfirm => {
       if (deleteConfirm) {
         this.loading = true;
-        this.catSrv.delete(this.categories[index].id).subscribe(res => {
+        this.catSrv.delete(this.categories.data[index].id).subscribe(res => {
           this.loading = false;
-          swal({title: 'موفق', text: `دسته بندی ${this.categories[index].name} با موفقیت حذف شد.`, icon: 'success'});
+          swal({title: 'موفق', text: `دسته بندی ${this.categories.data[index].name} با موفقیت حذف شد.`, icon: 'success'});
           this.fetch();
         }, err => {
           this.loading = false;
@@ -96,10 +94,10 @@ export class CategoriesComponent implements OnInit {
   }
 
   onToggleStatus(index: number) {
-    this.catSrv.update(this.categories[index]).subscribe(res => {
-      swal({title: 'موفق', text: `دسته بندی ${this.categories[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
+    this.catSrv.update(this.categories.data[index]).subscribe(res => {
+      swal({title: 'موفق', text: `دسته بندی ${this.categories.data[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
     }, err => {
-      this.categories[index].active = !this.categories[index].active;
+      this.categories.data[index].active = !this.categories.data[index].active;
       swal({title: 'ناموفق', icon: 'error'});
     });
   }

@@ -27,9 +27,12 @@ namespace TestBackend.Services
             _context.Categories.Remove(cat);
         }
 
-        public async Task<IEnumerable<CategoryDTO>> Get()
+        public async Task<GridData<CategoryDTO>> Get()
         {
-            return await _context.Categories.Select(x => DTOConvert.CategoryModelToDTO(x)).ToListAsync();
+            var data = new GridData<CategoryDTO>();
+            data.Data = await _context.Categories.Select(x => DTOConvert.CategoryModelToDTO(x)).ToListAsync();
+            
+            return data;
         }
 
         public async Task<CategoryDTO> GetById(int id)
@@ -38,10 +41,10 @@ namespace TestBackend.Services
             return DTOConvert.CategoryModelToDTO(cat);
         }
 
-        public async Task UpdateCategory(int id,CategoryDTO category)
+        public async Task UpdateCategory(int id, CategoryDTO category)
         {
             var cat = await _context.Categories.FindAsync(id);
-            cat = DTOConvert.CategoryDTOToModel(category)
+            cat = DTOConvert.CategoryDTOToModel(category);
         }
 
         public bool CategoryExists(int id)

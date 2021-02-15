@@ -5,6 +5,7 @@ import { CategoryService } from "../../services/category.service";
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import swal from 'sweetalert';
+import { GridData } from 'src/app/models/GridData';
 
 @Component({
   selector: 'app-products-modal',
@@ -16,7 +17,8 @@ export class ProductsModalComponent implements OnInit {
   mode: string;
   reachingOut = false;
   submitted = false;
-  categories: Category[] = [];
+  loadingCategories = false;
+  categories: GridData<Category>;
 
   @ViewChild('search') searchField: ElementRef;
 
@@ -30,8 +32,10 @@ export class ProductsModalComponent implements OnInit {
   ngOnInit(): void {
     this.mode = this.data.name === undefined ? 'new' : 'edit';
     this.title = this.mode === 'edit' ? 'ویرایش' : 'جدید';
+    this.loadingCategories = true;
     this.catSrv.get().subscribe(res => {
       this.categories = res;
+      this.loadingCategories = false;
     });
   }
 

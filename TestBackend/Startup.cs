@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Models;
+using TestBackend.Services;
 
 namespace TestBackend
 {
@@ -24,6 +25,8 @@ namespace TestBackend
             services.AddDbContext<ShopContext>(opt =>
                 opt.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

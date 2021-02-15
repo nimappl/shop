@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Category } from '../models/category';
+import { GridData } from '../models/GridData';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   get() {
-    return this.http.get<Category[]>(`${this.apiUri}/category`);
+    return this.http.get<GridData<Category>>(`${this.apiUri}/category`);
   }
 
   getById(id: number) {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Models;
 using TestBackend.DTOs;
+using TestBackend.Services;
 
 namespace TestBackend.Controllers
 {
@@ -14,18 +15,21 @@ namespace TestBackend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        private readonly ICategoryService _service;
         private readonly ShopContext _context;
 
-        public CategoryController(ShopContext context)
+        public CategoryController(ShopContext context, ICategoryService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: api/CategoryList
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
+        public async Task<ActionResult<GridData<CategoryDTO>>> GetCategories()
         {
-            return await _context.Categories.Select(x => ConvertToDTO(x)).ToListAsync();
+            // return await _context.Categories.Select(x => ConvertToDTO(x)).ToListAsync();
+            return await _service.Get();
         }
 
         // GET: api/CategoryList/5

@@ -2,10 +2,8 @@
 <form #f="ngForm" (ngSubmit)="save()">
   <mat-form-field class="w-100" appearance="fill">
     <mat-label>نام دسته بندی</mat-label>
-    <input matNativeControl [(ngModel)]="data.name" type="text" name="name">
+    <input matNativeControl [(ngModel)]="data.name" autocomplete="off" type="text" name="name">
   </mat-form-field>
-  <!-- <label for="name">نوع دسته بندی</label>
-  <input type="text" class="form-control" name="name" id="name" [(ngModel)]="data.name"> -->
   <div class="d-flex justify-content-end">
     <button class="btn btn-secondary ml-2" [mat-dialog-close]="submitted">بستن</button>
     <button class="btn btn-primary d-flex" type="submit">

@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Category } from '../models/category';
+import { GridData } from '../models/GridData';
 
 @Component({
   selector: 'app-data-table',
@@ -6,7 +8,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements OnInit {
-  @Input() records: any[];
+  @Input() data: any;
   @Input() columns: any[];
   @Input() sortOptions: any[];
   @Input() searchField: boolean;
@@ -20,10 +22,12 @@ export class DataTableComponent implements OnInit {
   @Output() filtersChanged = new EventEmitter();
 
   activeDeactive(): boolean {
-    if (this.records.length > 0 && this.records[0].hasOwnProperty('active'))
-      return true;
-
-    return false;
+    if (!this.loading && !this.loadingFailed) {
+      if (this.data.data.length > 0 && this.data.data[0].hasOwnProperty('active'))
+        return true;
+      
+      return false;
+    }
   }
 
   ngOnInit(): void {}
@@ -49,7 +53,7 @@ export class DataTableComponent implements OnInit {
   }
 
   edit(index: number) {
-    this.editItem.emit(this.records[index]);
+    this.editItem.emit(this.data.data[index]);
   }
 
   remove(index: number) {

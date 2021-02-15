@@ -25,7 +25,15 @@
             <mat-icon matPrefix fontSet="fas" fontIcon="fa-search" class="ml-1"></mat-icon>
             <input type="text" autocomplete="off" matNativeControl #search>
           </mat-form-field>
-          <mat-option *ngFor="let cat of categories" [value]="cat.id" style="font-family: Vazir">{{ cat.name }}</mat-option>
+          <mat-option [disabled]="true" *ngIf="loadingCategories; else options">
+            <div class="d-flex align-items-center pr-2">
+              <app-loading-spinner-bars style="height: 32px"></app-loading-spinner-bars>
+              <div class="text-muted font-italic mr-1">در حال بارگذاری</div>
+            </div>
+            </mat-option>
+          <ng-template #options>
+            <mat-option *ngFor="let cat of categories.data" [value]="cat.id" style="font-family: Vazir">{{ cat.name }}</mat-option>
+          </ng-template>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="fill">

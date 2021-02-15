@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.Models;
 using TestBackend.DTOs;
+using TestBackend.Services;
 
 namespace TestBackend.Controllers
 {
@@ -15,17 +16,19 @@ namespace TestBackend.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ShopContext _context;
+        private readonly IProductService _service;
 
-        public ProductController(ShopContext context)
+        public ProductController(ShopContext context, IProductService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: api/ProductList
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<GridData<ProductDTO>>> GetProducts()
         {
-            return await _context.Products.Select(x => ConvertToDTO(x)).ToListAsync();
+            return await _service.Get();
         }
 
         // GET: api/ProductList/5

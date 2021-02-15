@@ -7,6 +7,7 @@ import { Product } from '../models/product';
 import { ProductService } from "../services/product.service";
 import { Filter } from "../models/filter";
 import { CategoryService } from '../services/category.service';
+import { GridData } from '../models/GridData';
 
 @Component({
   selector: 'app-products',
@@ -20,7 +21,7 @@ export class ProductsComponent implements OnInit {
   //   {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'تلفن همراه', stock: 24, active: true},
   //   {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', price: 85000, category: 'لباس مردانه', stock: 13, active: true}
   // ];
-  products: Product[] = [];
+  products: GridData<Product>;
 
   columns = [
     {name: 'name', title: 'نام'},
@@ -59,7 +60,7 @@ export class ProductsComponent implements OnInit {
     this.productSrv.get().subscribe(res => {
       this.products = res;
       this.loading = false;
-      this.products.forEach(p => {
+      this.products.data.forEach(p => {
         this.catSrv.getById(p.categoryId).subscribe(cat => {
           p.category = cat.name;
         });
@@ -96,16 +97,16 @@ export class ProductsComponent implements OnInit {
   onRemoveProduct(index: number) {
     swal({
       title: 'حذف',
-      text: `آیا از حذف ${this.products[index].name} اطمینان دارید؟`,
+      text: `آیا از حذف ${this.products.data[index].name} اطمینان دارید؟`,
       icon: 'warning',
       buttons: ['بازگشت', 'ادامه'],
       dangerMode: true
     }).then(deleteConfirm => {
       if (deleteConfirm) {
         this.loading = true;
-        this.productSrv.delete(this.products[index].id).subscribe(res => {
+        this.productSrv.delete(this.products.data[index].id).subscribe(res => {
           this.loading = false;
-          swal({title: 'موفق', text: `${this.products[index].name} با موفقیت حذف شد.`, icon: 'success'});
+          swal({title: 'موفق', text: `${this.products.data[index].name} با موفقیت حذف شد.`, icon: 'success'});
           this.fetch();
         }, err => {
           this.loading = false;
@@ -116,10 +117,10 @@ export class ProductsComponent implements OnInit {
   }
 
   onActiveDeactive(index: number) {
-    this.productSrv.update(this.products[index]).subscribe(res => {
-      swal({title: 'موفق', text: `${this.products[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
+    this.productSrv.update(this.products.data[index]).subscribe(res => {
+      swal({title: 'موفق', text: `${this.products.data[index].name} با موفقیت بروز رسانی شد.`, icon: 'success'});
     }, err => {
-      this.products[index].active = !this.products[index].active;
+      this.products[index].active = !this.products.data[index].active;
       swal({title: 'ناموفق', icon: 'error'});
     });
   }

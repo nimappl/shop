@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Product } from "../models/product";
+import { GridData } from '../models/GridData';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   get() {
-    return this.http.get<Product[]>(`${this.apiUri}/product`);
+    return this.http.get<GridData<Product>>(`${this.apiUri}/product`);
   }
 
   create(product: Product) {
