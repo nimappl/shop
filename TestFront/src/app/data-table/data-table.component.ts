@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Category } from '../models/category';
-import { GridData } from '../models/GridData';
+import { GridData, sortType } from '../models/GridData';
 
 @Component({
   selector: 'app-data-table',
@@ -37,19 +37,15 @@ export class DataTableComponent implements OnInit {
   }
 
   toggleSortFor(column: string) {
-    this.sortOptions.forEach(thing => {
-      if (thing.name === column) {
-        if (thing.sort === 'none') {
-        thing.sort = 'asc';
-        } else if (thing.sort === 'desc') {
-          thing.sort = 'none';
-        } else if (thing.sort === 'asc') {
-          thing.sort = 'desc';
-        }
-      }
-    });
+    this.data.sortBy = column
+    
+    if (this.data.sortType === sortType.Desc || this.data.sortType === null) {
+      this.data.sortType = sortType.Asc;
+    } else if (this.data.sortType === sortType.Asc) {
+      this.data.sortType = sortType.Desc;
+    }
 
-    this.sortChanged.emit(this.sortOptions);
+    this.sortChanged.emit();
   }
 
   edit(index: number) {
@@ -70,5 +66,9 @@ export class DataTableComponent implements OnInit {
       if (field !== 'active' && !field.includes('id') && !field.includes('Id'))
         fields.push(record[field]);
     return fields;
+  }
+
+  setFilters(value: string) {
+    console.log(value);
   }
 }

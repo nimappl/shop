@@ -14,13 +14,13 @@ import swal from 'sweetalert';
 })
 export class CategoriesComponent implements OnInit {
 
-  categories: GridData<Category>;
+  categories: GridData<Category> = new GridData<Category>();
 
   columns = [{name: 'name', title: 'نام'}];
 
   sortOptions = [
     {name: 'id', sort: 'asc'},
-    {name: 'name', sort: 'none'}
+    {name: 'name', sort: 'asc'}
   ];
 
   showSearchField = false;
@@ -34,12 +34,15 @@ export class CategoriesComponent implements OnInit {
               private catSrv: CategoryService) { }
 
   ngOnInit(): void {
+    this.categories.filters.push(new Filter('name', ''));
+    this.categories.sortBy = 'name'
     this.fetch();
+    console.log(this.categories);
   }
 
-  fetch() {
+  fetch(options: GridData<Category> = new GridData<Category>()) {
     this.loading = true;
-    this.catSrv.get().subscribe(res => {
+    this.catSrv.get(options).subscribe(res => {
       this.loading = false;
       this.categories = res;
     }, err => {

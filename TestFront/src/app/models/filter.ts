@@ -1,4 +1,6 @@
 export class Filter {
-    key: string;
-    value: string;
+    constructor(
+        public key: string,
+        public value: string
+    ) {}
 }

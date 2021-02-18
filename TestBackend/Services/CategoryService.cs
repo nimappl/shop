@@ -24,6 +24,11 @@ namespace TestBackend.Services
         public async Task DeleteCategory(int id)
         {
             var cat = await _context.Categories.FindAsync(id);
+            var products = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
+            foreach (var p in products)
+            {
+                _context.Products.Remove(p);
+            }
             _context.Categories.Remove(cat);
         }
 

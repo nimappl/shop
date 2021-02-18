@@ -4,11 +4,9 @@
       <th>#</th>
       <th *ngFor="let col of columns" (click)="toggleSortFor(col.name)" style="cursor: pointer; user-select: none;">
         {{ col.title }}
-        <span *ngFor="let option of sortOptions">
-          <ng-template [ngIf]="option.name === col.name">
-            <i class="fas fa-sort-amount-down-alt mr-2" *ngIf="option.sort === 'asc'"></i>
-            <i class="fas fa-sort-amount-down mr-2" *ngIf="option.sort === 'desc'"></i>
-          </ng-template>
+        <span *ngIf="col.name === data.sortBy">
+          <i class="fas fa-sort-amount-down-alt mr-2" *ngIf="data.sortType === 0"></i>
+          <i class="fas fa-sort-amount-down mr-2" *ngIf="data.sortType === 1"></i>
         </span>
       </th>
       <th class="text-center" *ngIf="activeDeactive()">فعال/غیرفعال</th>
@@ -19,7 +17,13 @@
     <tr *ngIf="searchField">
       <th><i class="fas fa-search"></i></th>
       <td *ngFor="let col of columns">
-        <input type="text" class="form-control form-control-sm" placeholder="جستجو">
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          placeholder="جستجو"
+          autocomplete="off"
+          [name]="col.name"
+          (input)="setFilters($event.target.value)">
       </td>
       <td *ngIf="activeDeactive()"></td>
       <td></td>
