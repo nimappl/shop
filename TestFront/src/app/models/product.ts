@@ -4,7 +4,7 @@ export class Product {
     brand: string;
     price: number;
     categoryId: number;
-    category: string;
+    categoryName: string;
     stock: number;
     active: boolean;
     description?: string;

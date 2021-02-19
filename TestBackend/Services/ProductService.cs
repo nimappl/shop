@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -27,14 +28,50 @@ namespace TestBackend.Services
 
         public async Task<GridData<ProductDTO>> Get()
         {
-            var products = new GridData<ProductDTO>();
-            products.Data = await _context.Products.Select(p => (DTOConvert.ProductModelToDTO(p))).ToListAsync();
-            return products;
+            // var products = new GridData<ProductDTO>();
+            // products.Data = await _context.Products.Select(p => (DTOConvert.ProductModelToDTO(p))).ToListAsync();
+            // return products;
+            IQueryable<ProductDTO> query = 
+                from p in _context.Products
+                from c in _context.Categories
+                where p.CategoryId == c.Id
+                select new ProductDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Brand = p.Brand,
+                    Price = p.Price,
+                    CategoryId = p.CategoryId,
+                    CategoryName = c.Name,
+                    Stock = p.Stock,
+                    Active = p.Active
+                };
+
+                query.Where(a => a.Brand.Contains("اپل"));
+
+            return new GridData<ProductDTO>
+            {
+                Data = await query.ToListAsync(),
+            };
         }
 
         public async Task<ProductDTO> GetById(int id)
         {
-            return DTOConvert.ProductModelToDTO(await _context.Products.FindAsync(id));
+            return await (
+                from p in _context.Products
+                from c in _context.Categories
+                where p.CategoryId == c.Id
+                select new ProductDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Brand = p.Brand,
+                    Price = p.Price,
+                    CategoryId = p.CategoryId,
+                    CategoryName = c.Name,
+                    Stock = p.Stock,
+                    Active = p.Active
+                }).FirstOrDefaultAsync();
         }
 
         public async Task UpdateProduct(int id, ProductDTO dto)

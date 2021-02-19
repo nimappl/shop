@@ -28,7 +28,7 @@
       <td *ngIf="activeDeactive()"></td>
       <td></td>
     </tr>
-    <ng-template [ngIf]="!loadingFailed && !loading && data.data.length !== 0">
+    <ng-template [ngIf]="!loading && !loadingFailed && data.data.length !== 0">
       <tr *ngFor="let record of data.data; let i = index">
         <th>{{ i+1 }}</th>
         <td *ngFor="let field of recordFields(record)">
@@ -66,4 +66,4 @@
   <app-loading-spinner-bars style="height: 25px;"></app-loading-spinner-bars>
   <p class="message my-auto font-italic mr-1 text-muted">در حال بارگذاری</p>
 </div>
-<app-pagination></app-pagination>
+<app-pagination *ngIf="!loadingFailed && !loading"></app-pagination>

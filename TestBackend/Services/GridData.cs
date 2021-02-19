@@ -7,7 +7,7 @@ namespace TestBackend.Services
         public List<T> Data { get; set; }
         public List<Filter> Filters { get; set; }
         public string SortBy { get; set; }
-        public string SortType { get; set; }
+        public SortType SortType { get; set; } = SortType.Asc;
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
         public int Count { get; set; }
@@ -22,6 +22,6 @@ public class Filter
 }
 
 public enum SortType {
-    Asc,
+    Asc = 0,
     Desc,
 }

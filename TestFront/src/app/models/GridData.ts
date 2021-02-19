@@ -6,7 +6,7 @@ export class GridData<T> {
     sortBy: string;
     sortType: sortType = sortType.Asc;
     pageSize: number = 5;
-    PageNumber: number = 1;
+    pageNumber: number = 1;
     count: number;
 }
 

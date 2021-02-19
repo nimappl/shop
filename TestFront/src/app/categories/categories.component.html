@@ -1,31 +1,31 @@
 <div class="card">
-    <div class="card-header">
-      دسته بندی ها
-    </div>
-    <div class="card-body">
-      <div class="mb-3">
-        <button class="btn btn-primary ml-2" (click)="openModal()">
-          جدید
-          <i class="fas fa-plus mr-2"></i>
-        </button>
-        <button class="btn btn-secondary" (click)="toggleSearch()">
-          جستجو
-          <i class="fas fa-search mr-2"></i>
-        </button>
-      </div>
-      <app-data-table
-        [data]="categories"
-        [columns]="columns"
-        [sortOptions]="sortOptions"
-        [searchField]="showSearchField"
-        [loading]="loading"
-        [loadingFailed]="loadingFailed"
-        (editItem)="openModal($event)"
-        (removeItem)="onRemoveCategory($event)"
-        (activeChanged)="onToggleStatus($event)"
-        (sortChanged)="onSortChange($event)"
-        (filtersChanged)="search($event)">
-      </app-data-table>
-    </div>
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <div class="card-header">
+    دسته بندی ها
   </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <button class="btn btn-primary ml-2" (click)="openModal()">
+        جدید
+        <i class="fas fa-plus mr-2"></i>
+      </button>
+      <button class="btn btn-secondary" (click)="toggleSearch()">
+        جستجو
+        <i class="fas fa-search mr-2"></i>
+      </button>
+    </div>
+    <app-data-table
+      [data]="categories"
+      [columns]="columns"
+      [sortOptions]="sortOptions"
+      [searchField]="showSearchField"
+      [loading]="loading"
+      [loadingFailed]="loadingFailed"
+      (editItem)="openModal($event)"
+      (removeItem)="onRemoveCategory($event)"
+      (activeChanged)="onToggleStatus($event)"
+      (sortChanged)="onSortChange($event)"
+      (filtersChanged)="search($event)">
+    </app-data-table>
+  </div>
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div>

@@ -4,7 +4,7 @@ import { CategoriesModalComponent } from './categories-modal/categories-modal.co
 import { CategoryService } from '../services/category.service';
 import { Category } from "../models/category";
 import { Filter } from "../models/filter";
-import { GridData } from "../models/GridData";
+import { GridData, sortType } from "../models/GridData";
 import swal from 'sweetalert';
 
 @Component({
@@ -34,17 +34,16 @@ export class CategoriesComponent implements OnInit {
               private catSrv: CategoryService) { }
 
   ngOnInit(): void {
-    this.categories.filters.push(new Filter('name', ''));
-    this.categories.sortBy = 'name'
     this.fetch();
-    console.log(this.categories);
   }
 
-  fetch(options: GridData<Category> = new GridData<Category>()) {
+  fetch(options?: GridData<Category>) {
     this.loading = true;
     this.catSrv.get(options).subscribe(res => {
       this.loading = false;
       this.categories = res;
+      // this.categories.filters.push(new Filter('name', ''));
+      this.categories.sortBy = 'name';
     }, err => {
       this.loading = false;
       this.loadingFailed = true;

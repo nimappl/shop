@@ -16,19 +16,14 @@ import { GridData } from '../models/GridData';
 })
 export class ProductsComponent implements OnInit {
 
-  // products: Product[] = [
-  //   {name: 'اچ تی سی 10', brand: 'HTC', price: 1500000, category: 'تلفن همراه', stock: 5, active: false},
-  //   {name: 'iPhone X', brand: 'Apple', price: 21000000, category: 'تلفن همراه', stock: 24, active: true},
-  //   {name: 'تی شرت مردانه (مشکی)', brand: 'LC WAIKIKI', price: 85000, category: 'لباس مردانه', stock: 13, active: true}
-  // ];
-  products: GridData<Product>;
+  products: GridData<Product> = new GridData<Product>();
 
   columns = [
     {name: 'name', title: 'نام'},
     {name: 'brand', title: 'برند '},
     {name: 'price', title: 'قیمت'},
-    {name: 'stock', title: 'موجود'},
-    {name: 'category', title: 'دسته بندی'}
+    {name: 'categoryName', title: 'دسته بندی'},
+    {name: 'stock', title: 'موجود'}
   ];
 
   sortOptions = [
@@ -36,8 +31,8 @@ export class ProductsComponent implements OnInit {
     {name: 'name', sort: 'asc'},
     {name: 'brand', sort: 'none'},
     {name: 'price', sort: 'none'},
-    {name: 'stock', sort: 'none'},
-    {name: 'category', sort: 'none'}
+    {name: 'categoryName', sort: 'none'},
+    {name: 'stock', sort: 'none'}
   ];
 
   showSearchField = false;
@@ -48,8 +43,7 @@ export class ProductsComponent implements OnInit {
   activeDeactive: boolean = true;
 
   constructor(private dialog: MatDialog,
-              private productSrv: ProductService,
-              private catSrv: CategoryService) {}
+              private productSrv: ProductService) {}
 
   ngOnInit(): void {
     this.fetch();
@@ -59,12 +53,8 @@ export class ProductsComponent implements OnInit {
     this.loading = true;
     this.productSrv.get().subscribe(res => {
       this.products = res;
+      this.products.sortBy = 'name';
       this.loading = false;
-      this.products.data.forEach(p => {
-        this.catSrv.getById(p.categoryId).subscribe(cat => {
-          p.category = cat.name;
-        });
-      });
     }, err => {
       this.loading = false;
       this.loadingFailed = true;

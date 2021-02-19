@@ -25,7 +25,7 @@ export class DataTableComponent implements OnInit {
     if (!this.loading && !this.loadingFailed) {
       if (this.data.data.length > 0 && this.data.data[0].hasOwnProperty('active'))
         return true;
-      
+
       return false;
     }
   }
@@ -38,13 +38,14 @@ export class DataTableComponent implements OnInit {
 
   toggleSortFor(column: string) {
     this.data.sortBy = column
-    
-    if (this.data.sortType === sortType.Desc || this.data.sortType === null) {
+
+    if (this.data.sortType === sortType.Desc) {
       this.data.sortType = sortType.Asc;
     } else if (this.data.sortType === sortType.Asc) {
       this.data.sortType = sortType.Desc;
     }
 
+    console.log(this.data);
     this.sortChanged.emit();
   }
 
