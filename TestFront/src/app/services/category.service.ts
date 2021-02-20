@@ -11,8 +11,8 @@ export class CategoryService {
 
   constructor(private http: HttpClient) {}
 
-  get(options: GridData<Category>) {
-    return this.http.get<GridData<Category>>(`${this.apiUri}/category/`);
+  get(options?: GridData<Category>) {
+    return this.http.get<GridData<Category>>(`${this.apiUri}/category/?queryParams=${JSON.stringify(options)}`);
   }
 
   getById(id: number) {

@@ -31,7 +31,7 @@ namespace TestBackend.Services
             // var products = new GridData<ProductDTO>();
             // products.Data = await _context.Products.Select(p => (DTOConvert.ProductModelToDTO(p))).ToListAsync();
             // return products;
-            IQueryable<ProductDTO> query = 
+            IQueryable<ProductDTO> data =
                 from p in _context.Products
                 from c in _context.Categories
                 where p.CategoryId == c.Id
@@ -47,11 +47,11 @@ namespace TestBackend.Services
                     Active = p.Active
                 };
 
-                query.Where(a => a.Brand.Contains("اپل"));
+                // data = data.Where(a => a.Name.Contains("ت"));
 
             return new GridData<ProductDTO>
             {
-                Data = await query.ToListAsync(),
+                Data = await data.ToListAsync(),
             };
         }
 

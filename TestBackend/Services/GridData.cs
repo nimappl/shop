@@ -6,7 +6,7 @@ namespace TestBackend.Services
     {
         public List<T> Data { get; set; }
         public List<Filter> Filters { get; set; }
-        public string SortBy { get; set; }
+        public string SortBy { get; set; } = "id";
         public SortType SortType { get; set; } = SortType.Asc;
         public int PageSize { get; set; }
         public int PageNumber { get; set; }

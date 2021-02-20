@@ -2,11 +2,11 @@ import { Filter } from "./filter";
 
 export class GridData<T> {
     data: T[];
-    filters: Filter[] = new Array<Filter>();
+    filters: Filter[];
     sortBy: string;
-    sortType: sortType = sortType.Asc;
-    pageSize: number = 5;
-    pageNumber: number = 1;
+    sortType: sortType;
+    pageSize: number;
+    pageNumber: number;
     count: number;
 }
 

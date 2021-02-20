@@ -82,8 +82,6 @@ export class ProductsComponent implements OnInit {
     this.showSearchField = !this.showSearchField;
   }
 
-  search(filters: Filter[]) {}
-
   onRemoveProduct(index: number) {
     swal({
       title: 'حذف',
@@ -115,6 +113,6 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  onSortChange(index: number) {}
+  paramsChanged() {}
 
 }

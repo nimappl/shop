@@ -16,15 +16,13 @@
     <app-data-table
       [data]="categories"
       [columns]="columns"
-      [sortOptions]="sortOptions"
       [searchField]="showSearchField"
       [loading]="loading"
       [loadingFailed]="loadingFailed"
       (editItem)="openModal($event)"
       (removeItem)="onRemoveCategory($event)"
       (activeChanged)="onToggleStatus($event)"
-      (sortChanged)="onSortChange($event)"
-      (filtersChanged)="search($event)">
+      (paramsChanged)="paramsChanged()">
     </app-data-table>
   </div>
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>

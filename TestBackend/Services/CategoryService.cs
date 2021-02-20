@@ -32,12 +32,36 @@ namespace TestBackend.Services
             _context.Categories.Remove(cat);
         }
 
-        public async Task<GridData<CategoryDTO>> Get()
+        public async Task<GridData<CategoryDTO>> Get(GridData<CategoryDTO> queryParams)
         {
-            var data = new GridData<CategoryDTO>();
-            data.Data = await _context.Categories.Select(x => DTOConvert.CategoryModelToDTO(x)).ToListAsync();
+            var query = _context.Categories as IQueryable<Category>;
+            if (queryParams.Filters != null)
+            {
+                foreach (var filter in queryParams.Filters)
+                {
+                    if (filter.Key == "name")
+                    {
+                        query = query.Where(c => c.Name.Contains(filter.Value));
+                    }
+                }
+            }
+
+            if (queryParams.SortBy == "id")
+                query = query.OrderBy(c => c.Id );
+            if (queryParams.SortBy == "name")
+            {
+                if (queryParams.SortType == SortType.Asc)
+                    query = query.OrderBy(c => c.Name);
+                else
+                    query = query.OrderByDescending(c => c.Name);
+            }
             
-            return data;
+            return new GridData<CategoryDTO>
+            {
+                Data = await query.Select(c => DTOConvert.CategoryModelToDTO(c)).ToListAsync(),
+                SortBy = queryParams.SortBy,
+                SortType = queryParams.SortType
+            };
         }
 
         public async Task<CategoryDTO> GetById(int id)

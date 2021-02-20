@@ -18,11 +18,6 @@ export class CategoriesComponent implements OnInit {
 
   columns = [{name: 'name', title: 'نام'}];
 
-  sortOptions = [
-    {name: 'id', sort: 'asc'},
-    {name: 'name', sort: 'asc'}
-  ];
-
   showSearchField = false;
   loading = false;
   loadingFailed = false;
@@ -37,13 +32,15 @@ export class CategoriesComponent implements OnInit {
     this.fetch();
   }
 
-  fetch(options?: GridData<Category>) {
+  fetch() {
+    delete this.categories.data;
+    // this.categories.filters = new Array<Filter>();
+    // this.categories.filters.push(new Filter('name', 'لباس'));
+    console.log(this.categories);
     this.loading = true;
-    this.catSrv.get(options).subscribe(res => {
+    this.catSrv.get(this.categories).subscribe(res => {
       this.loading = false;
       this.categories = res;
-      // this.categories.filters.push(new Filter('name', ''));
-      this.categories.sortBy = 'name';
     }, err => {
       this.loading = false;
       this.loadingFailed = true;
@@ -71,7 +68,9 @@ export class CategoriesComponent implements OnInit {
     this.showSearchField = !this.showSearchField;
   }
 
-  search(filters: Filter[]) {}
+  paramsChanged() {
+    this.fetch();
+  }
 
   onRemoveCategory(index: number) {
     swal({
@@ -103,7 +102,5 @@ export class CategoriesComponent implements OnInit {
       swal({title: 'ناموفق', icon: 'error'});
     });
   }
-
-  onSortChange(index: number) {}
 
 }

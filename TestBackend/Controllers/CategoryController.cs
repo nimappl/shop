@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TestBackend.Models;
 using TestBackend.DTOs;
 using TestBackend.Services;
+using Newtonsoft.Json;
 
 namespace TestBackend.Controllers
 {
@@ -24,10 +25,10 @@ namespace TestBackend.Controllers
 
         // GET: api/CategoryList
         [HttpGet]
-        public async Task<ActionResult<GridData<CategoryDTO>>> GetCategories()
+        public async Task<ActionResult<GridData<CategoryDTO>>> GetCategories([FromQuery] string queryParams)
         {
-            // return await _context.Categories.Select(x => ConvertToDTO(x)).ToListAsync();
-            return await _service.Get();
+            var p = JsonConvert.DeserializeObject<GridData<CategoryDTO>>(queryParams);
+            return await _service.Get(p);
         }
 
         // GET: api/CategoryList/5

@@ -23,7 +23,7 @@
           placeholder="جستجو"
           autocomplete="off"
           [name]="col.name"
-          (input)="setFilters($event.target.value)">
+          (input)="search(col.name, $event.target.value)">
       </td>
       <td *ngIf="activeDeactive()"></td>
       <td></td>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Category } from '../models/category';
+import { Filter } from '../models/filter';
 import { GridData, sortType } from '../models/GridData';
 
 @Component({
@@ -10,7 +11,7 @@ import { GridData, sortType } from '../models/GridData';
 export class DataTableComponent implements OnInit {
   @Input() data: any;
   @Input() columns: any[];
-  @Input() sortOptions: any[];
+  // @Input() sortOptions: any[];
   @Input() searchField: boolean;
   @Input() loading: boolean;
   @Input() loadingFailed: boolean;
@@ -18,8 +19,9 @@ export class DataTableComponent implements OnInit {
   @Output() editItem = new EventEmitter();
   @Output() removeItem = new EventEmitter();
   @Output() activeChanged = new EventEmitter();
-  @Output() sortChanged = new EventEmitter();
-  @Output() filtersChanged = new EventEmitter();
+  // @Output() sortChanged = new EventEmitter();
+  // @Output() filtersChanged = new EventEmitter();
+  @Output() paramsChanged = new EventEmitter();
 
   activeDeactive(): boolean {
     if (!this.loading && !this.loadingFailed) {
@@ -37,16 +39,18 @@ export class DataTableComponent implements OnInit {
   }
 
   toggleSortFor(column: string) {
-    this.data.sortBy = column
-
-    if (this.data.sortType === sortType.Desc) {
+    if (this.data.sortBy !== column) {
       this.data.sortType = sortType.Asc;
-    } else if (this.data.sortType === sortType.Asc) {
-      this.data.sortType = sortType.Desc;
+      this.data.sortBy = column;
+    } else {
+      if (this.data.sortType === sortType.Desc) {
+        this.data.sortType = sortType.Asc;
+      } else if (this.data.sortType === sortType.Asc) {
+        this.data.sortType = sortType.Desc;
+      }
     }
 
-    console.log(this.data);
-    this.sortChanged.emit();
+    this.paramsChanged.emit();
   }
 
   edit(index: number) {
@@ -69,7 +73,20 @@ export class DataTableComponent implements OnInit {
     return fields;
   }
 
-  setFilters(value: string) {
-    console.log(value);
+  search(column: string, value: string) {
+    if (!this.data.filters) {
+      this.data.filters = new Array<Filter>();
+      this.data.filters.push(new Filter(column, value));
+    } else {
+      this.data.filters.forEach(filter => {
+        if (filter.key === column) {
+          filter.value = value;
+        } else {
+          this.data.push(new Filter(column, value));
+        }
+      });
+    }
+
+    this.paramsChanged.emit();
   }
 }
