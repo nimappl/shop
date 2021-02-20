@@ -34,13 +34,11 @@ export class CategoriesComponent implements OnInit {
 
   fetch() {
     delete this.categories.data;
-    // this.categories.filters = new Array<Filter>();
-    // this.categories.filters.push(new Filter('name', 'لباس'));
-    console.log(this.categories);
     this.loading = true;
     this.catSrv.get(this.categories).subscribe(res => {
       this.loading = false;
       this.categories = res;
+      console.log(this.categories);
     }, err => {
       this.loading = false;
       this.loadingFailed = true;

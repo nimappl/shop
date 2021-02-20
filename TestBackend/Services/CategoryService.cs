@@ -35,16 +35,17 @@ namespace TestBackend.Services
         public async Task<GridData<CategoryDTO>> Get(GridData<CategoryDTO> queryParams)
         {
             var query = _context.Categories as IQueryable<Category>;
+            int count;
             if (queryParams.Filters != null)
             {
                 foreach (var filter in queryParams.Filters)
                 {
                     if (filter.Key == "name")
-                    {
                         query = query.Where(c => c.Name.Contains(filter.Value));
-                    }
                 }
             }
+
+            count = await query.CountAsync();
 
             if (queryParams.SortBy == "id")
                 query = query.OrderBy(c => c.Id );
@@ -55,12 +56,18 @@ namespace TestBackend.Services
                 else
                     query = query.OrderByDescending(c => c.Name);
             }
+
+            query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize);
             
             return new GridData<CategoryDTO>
             {
                 Data = await query.Select(c => DTOConvert.CategoryModelToDTO(c)).ToListAsync(),
+                Filters = queryParams.Filters,
                 SortBy = queryParams.SortBy,
-                SortType = queryParams.SortType
+                SortType = queryParams.SortType,
+                PageSize = queryParams.PageSize,
+                PageNumber = queryParams.PageNumber,
+                Count = count
             };
         }
 

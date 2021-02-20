@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
-import { Category } from '../models/category';
 import { Filter } from '../models/filter';
 import { GridData, sortType } from '../models/GridData';
+import { PagingParams } from "../models/pagingParams";
 
 @Component({
   selector: 'app-data-table',
@@ -9,9 +9,8 @@ import { GridData, sortType } from '../models/GridData';
   styleUrls: ['./data-table.component.css']
 })
 export class DataTableComponent implements OnInit {
-  @Input() data: any;
-  @Input() columns: any[];
-  // @Input() sortOptions: any[];
+  @Input() data: GridData<any>;
+  @Input() columns: Array<{name: string, title: string}>[];
   @Input() searchField: boolean;
   @Input() loading: boolean;
   @Input() loadingFailed: boolean;
@@ -19,9 +18,9 @@ export class DataTableComponent implements OnInit {
   @Output() editItem = new EventEmitter();
   @Output() removeItem = new EventEmitter();
   @Output() activeChanged = new EventEmitter();
-  // @Output() sortChanged = new EventEmitter();
-  // @Output() filtersChanged = new EventEmitter();
   @Output() paramsChanged = new EventEmitter();
+
+  pagingParams: PagingParams = new PagingParams();
 
   activeDeactive(): boolean {
     if (!this.loading && !this.loadingFailed) {
@@ -32,10 +31,10 @@ export class DataTableComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
-
-  toggleSearch() {
-    this.searchField = !this.searchField;
+  ngOnInit(): void {
+    this.pagingParams.pageSize = this.data.pageSize;
+    this.pagingParams.currentPage = this.data.pageNumber;
+    this.pagingParams.count = this.data.count;
   }
 
   toggleSortFor(column: string) {
@@ -82,11 +81,15 @@ export class DataTableComponent implements OnInit {
         if (filter.key === column) {
           filter.value = value;
         } else {
-          this.data.push(new Filter(column, value));
+          this.data.filters.push(new Filter(column, value));
         }
       });
     }
 
+    this.paramsChanged.emit();
+  }
+
+  pagingChanged() {
     this.paramsChanged.emit();
   }
 }

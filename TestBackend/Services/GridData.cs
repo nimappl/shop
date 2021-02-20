@@ -8,8 +8,8 @@ namespace TestBackend.Services
         public List<Filter> Filters { get; set; }
         public string SortBy { get; set; } = "id";
         public SortType SortType { get; set; } = SortType.Asc;
-        public int PageSize { get; set; }
-        public int PageNumber { get; set; }
+        public int PageSize { get; set; } = 5;
+        public int PageNumber { get; set; } = 1;
         public int Count { get; set; }
 
     }

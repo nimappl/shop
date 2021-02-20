@@ -66,4 +66,5 @@
   <app-loading-spinner-bars style="height: 25px;"></app-loading-spinner-bars>
   <p class="message my-auto font-italic mr-1 text-muted">در حال بارگذاری</p>
 </div>
-<app-pagination *ngIf="!loadingFailed && !loading"></app-pagination>
+<app-pagination *ngIf="!loadingFailed && !loading"
+  [pagingParams]="pagingParams" (pagingChanged)="pagingChanged()"></app-pagination>

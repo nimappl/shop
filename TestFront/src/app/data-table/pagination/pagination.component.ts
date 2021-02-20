@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PagingParams } from 'src/app/models/pagingParams';
 
 @Component({
   selector: 'app-pagination',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaginationComponent implements OnInit {
 
-  constructor() { }
+  @Input() pagingParams: PagingParams;
+  @Output() pagingChanged = new EventEmitter();
+
+  constructor() {}
 
   ngOnInit(): void {
   }
