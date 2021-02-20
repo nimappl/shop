@@ -9,7 +9,7 @@
           <i class="fas fa-sort-amount-down mr-2" *ngIf="data.sortType === 1"></i>
         </span>
       </th>
-      <th class="text-center" *ngIf="activeDeactive()">فعال/غیرفعال</th>
+      <th class="text-center">فعال/غیرفعال</th>
       <th class="text-center">ویرایش - حذف</th>
     </tr>
   </thead>
@@ -25,16 +25,16 @@
           [name]="col.name"
           (input)="search(col.name, $event.target.value)">
       </td>
-      <td *ngIf="activeDeactive()"></td>
+      <td></td>
       <td></td>
     </tr>
     <ng-template [ngIf]="!loading && !loadingFailed && data.data.length !== 0">
       <tr *ngFor="let record of data.data; let i = index">
-        <th>{{ i+1 }}</th>
+        <th>{{ i + (data.pageNumber - 1) * data.pageSize + 1 }}</th>
         <td *ngFor="let field of recordFields(record)">
           {{ field }}
         </td>
-        <td class="status" *ngIf="activeDeactive()">
+        <td class="status">
           <div class="d-flex justify-content-center align-items-center">
             <input type="checkbox" class="slide-toggle" title="فعال/غیر فعال" [(ngModel)]="record.active" (change)="toggleActive(i)">
           </div>
@@ -62,9 +62,9 @@
 <div class="mr-2 mb-2" *ngIf="!loading && !loadingFailed && data.data.length === 0">
   <span class="message text-muted font-weight-bold">موردی یافت نشد</span>
 </div>
-<div class="mr-2 mb-2 d-flex align-items-center" *ngIf="loading">
+<div class="mr-2 mb-2 d-flex align-items-center" *ngIf="sorting">
   <app-loading-spinner-bars style="height: 25px;"></app-loading-spinner-bars>
   <p class="message my-auto font-italic mr-1 text-muted">در حال بارگذاری</p>
 </div>
 <app-pagination *ngIf="!loadingFailed && !loading"
-  [pagingParams]="pagingParams" (pagingChanged)="pagingChanged()"></app-pagination>
+  [pagingParams]="data" (pagingChanged)="pagingChanged()"></app-pagination>

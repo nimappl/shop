@@ -13,6 +13,7 @@ export class DataTableComponent implements OnInit {
   @Input() columns: Array<{name: string, title: string}>[];
   @Input() searchField: boolean;
   @Input() loading: boolean;
+  @Input() sorting: boolean;
   @Input() loadingFailed: boolean;
 
   @Output() editItem = new EventEmitter();
@@ -32,9 +33,6 @@ export class DataTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.pagingParams.pageSize = this.data.pageSize;
-    this.pagingParams.currentPage = this.data.pageNumber;
-    this.pagingParams.count = this.data.count;
   }
 
   toggleSortFor(column: string) {
@@ -91,5 +89,6 @@ export class DataTableComponent implements OnInit {
 
   pagingChanged() {
     this.paramsChanged.emit();
+    console.log(this.data);
   }
 }

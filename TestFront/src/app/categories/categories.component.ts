@@ -3,8 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoriesModalComponent } from './categories-modal/categories-modal.component';
 import { CategoryService } from '../services/category.service';
 import { Category } from "../models/category";
-import { Filter } from "../models/filter";
-import { GridData, sortType } from "../models/GridData";
+import { GridData } from "../models/GridData";
 import swal from 'sweetalert';
 
 @Component({
@@ -20,6 +19,7 @@ export class CategoriesComponent implements OnInit {
 
   showSearchField = false;
   loading = false;
+  sorting = false;
   loadingFailed = false;
   searchFormStatus = 'clean';
 
@@ -29,18 +29,20 @@ export class CategoriesComponent implements OnInit {
               private catSrv: CategoryService) { }
 
   ngOnInit(): void {
-    this.fetch();
+    this.fetch(true);
   }
 
-  fetch() {
+  fetch(tableLoading?: boolean) {
     delete this.categories.data;
     this.loading = true;
+    this.sorting = tableLoading;
     this.catSrv.get(this.categories).subscribe(res => {
       this.loading = false;
+      this.sorting = false;
       this.categories = res;
-      console.log(this.categories);
     }, err => {
       this.loading = false;
+      this.sorting = false;
       this.loadingFailed = true;
     });
   }
@@ -58,7 +60,7 @@ export class CategoriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(submitted => {
       if (submitted)
-        this.fetch();
+        this.fetch(true);
     });
   }
 

@@ -11,3 +11,4 @@
 :host ::ng-deep .mat-select { text-align: right; padding-right: 6px; font-family: Vazir; }
 
 ul, p { margin-bottom: 0; }
+a { cursor: pointer; user-select: none;}

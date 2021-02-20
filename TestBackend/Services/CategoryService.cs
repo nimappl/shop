@@ -57,7 +57,7 @@ namespace TestBackend.Services
                     query = query.OrderByDescending(c => c.Name);
             }
 
-            query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize);
+            query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize).Take(queryParams.PageSize);
             
             return new GridData<CategoryDTO>
             {
