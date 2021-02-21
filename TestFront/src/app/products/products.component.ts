@@ -19,24 +19,16 @@ export class ProductsComponent implements OnInit {
   products: GridData<Product> = new GridData<Product>();
 
   columns = [
-    {name: 'name', title: 'نام'},
-    {name: 'brand', title: 'برند '},
-    {name: 'price', title: 'قیمت'},
-    {name: 'categoryName', title: 'دسته بندی'},
-    {name: 'stock', title: 'موجود'}
-  ];
-
-  sortOptions = [
-    {name: 'id', sort: 'none'},
-    {name: 'name', sort: 'asc'},
-    {name: 'brand', sort: 'none'},
-    {name: 'price', sort: 'none'},
-    {name: 'categoryName', sort: 'none'},
-    {name: 'stock', sort: 'none'}
+    {name: 'Name', title: 'نام'},
+    {name: 'Brand', title: 'برند '},
+    {name: 'Price', title: 'قیمت'},
+    {name: 'CategoryName', title: 'دسته بندی'},
+    {name: 'Stock', title: 'موجود'}
   ];
 
   showSearchField = false;
   loading = false;
+  sorting = false;
   loadingFailed = false;
   searchFormStatus = 'clean';
 
@@ -46,17 +38,25 @@ export class ProductsComponent implements OnInit {
               private productSrv: ProductService) {}
 
   ngOnInit(): void {
-    this.fetch();
+    this.fetch(true);
   }
 
-  fetch() {
+  fetch(tableLoading = false) {
+    let pox  = new GridData<Product>();
+    pox.filters = this.products.filters;
+    pox.pageNumber = this.products.pageNumber;
+    pox.pageSize = this.products.pageSize;
+    pox.sortBy = this.products.sortBy;
+    pox.sortType = this.products.sortType;
     this.loading = true;
-    this.productSrv.get().subscribe(res => {
-      this.products = res;
-      this.products.sortBy = 'name';
+    this.sorting = tableLoading;
+    this.productSrv.get(pox).subscribe(res => {
       this.loading = false;
+      this.sorting = false;
+      this.products = res;
     }, err => {
       this.loading = false;
+      this.sorting = false;
       this.loadingFailed = true;
     });
   }
@@ -113,6 +113,8 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  paramsChanged() {}
+  paramsChanged() {
+    this.fetch();
+  }
 
 }

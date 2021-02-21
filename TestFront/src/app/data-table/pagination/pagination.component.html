@@ -2,10 +2,10 @@
   <div class="d-flex">
     <p class="ml-1 align-self-center">تعداد نمایش:</p>
     <mat-form-field appearance="fill">
-      <mat-select [(ngModel)]="pagingParams.pageSize" (valueChange)="changed()">
-        <mat-option value="5" style="font-family: Vazir">5</mat-option>
-        <mat-option value="10" style="font-family: Vazir">10</mat-option>
-        <mat-option value="15" style="font-family: Vazir">20</mat-option>
+      <mat-select [(value)]="pagingParams.pageSize" (valueChange)="pageSizeChanged()">
+        <mat-option *ngFor="let opt of pageSizes" [value]="opt" style="font-family: Vazir">{{ opt }}</mat-option>
+        <!-- <mat-option value="10" style="font-family: Vazir">10</mat-option>
+        <mat-option value="15" style="font-family: Vazir">20</mat-option> -->
       </mat-select>
     </mat-form-field>
   </div>

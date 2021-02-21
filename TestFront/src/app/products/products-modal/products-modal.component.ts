@@ -6,6 +6,7 @@ import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import swal from 'sweetalert';
 import { GridData } from 'src/app/models/GridData';
+import { Filter } from 'src/app/models/filter';
 
 @Component({
   selector: 'app-products-modal',
@@ -18,7 +19,7 @@ export class ProductsModalComponent implements OnInit {
   reachingOut = false;
   submitted = false;
   loadingCategories = false;
-  categories: GridData<Category>;
+  categories: GridData<Category> = new GridData<Category>();
 
   @ViewChild('search') searchField: ElementRef;
 
@@ -30,13 +31,31 @@ export class ProductsModalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.categories.pageSize = 20;
     this.mode = this.data.name === undefined ? 'new' : 'edit';
     this.title = this.mode === 'edit' ? 'ویرایش' : 'جدید';
+    this.loadCategoryList();
+  }
+
+  loadCategoryList() {
+    delete this.categories.data;
     this.loadingCategories = true;
-    this.catSrv.get().subscribe(res => {
+    this.catSrv.get(this.categories).subscribe(res => {
       this.categories = res;
       this.loadingCategories = false;
     });
+  }
+
+  searchCategory(input: string) {
+    console.log('pox')
+    if (!this.categories.filters) {
+      this.categories.filters = new Array<Filter>();
+      this.categories.filters.push(new Filter("Name", input));
+    } else {
+      this.categories.filters[0].value = input;
+    }
+
+    this.loadCategoryList();
   }
 
   toggleCatSearch(open: boolean) {

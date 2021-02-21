@@ -28,7 +28,7 @@
       <td></td>
       <td></td>
     </tr>
-    <ng-template [ngIf]="!loading && !loadingFailed && data.data.length !== 0">
+    <ng-template [ngIf]="!sorting && !loadingFailed">
       <tr *ngFor="let record of data.data; let i = index">
         <th>{{ i + (data.pageNumber - 1) * data.pageSize + 1 }}</th>
         <td *ngFor="let field of recordFields(record)">
@@ -62,9 +62,9 @@
 <div class="mr-2 mb-2" *ngIf="!loading && !loadingFailed && data.data.length === 0">
   <span class="message text-muted font-weight-bold">موردی یافت نشد</span>
 </div>
-<div class="mr-2 mb-2 d-flex align-items-center" *ngIf="sorting">
+<div class="mr-2 mb-2 d-flex align-items-center" *ngIf="sorting && loading">
   <app-loading-spinner-bars style="height: 25px;"></app-loading-spinner-bars>
   <p class="message my-auto font-italic mr-1 text-muted">در حال بارگذاری</p>
 </div>
-<app-pagination *ngIf="!loadingFailed && !loading"
+<app-pagination *ngIf="!sorting && !loadingFailed"
   [pagingParams]="data" (pagingChanged)="pagingChanged()"></app-pagination>

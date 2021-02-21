@@ -11,8 +11,8 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  get() {
-    return this.http.get<GridData<Product>>(`${this.apiUri}/product`);
+  get(options: GridData<Product>) {
+    return this.http.get<GridData<Product>>(`${this.apiUri}/product/?queryParams=${JSON.stringify(options)}`);
   }
 
   create(product: Product) {

@@ -15,7 +15,7 @@ export class CategoriesComponent implements OnInit {
 
   categories: GridData<Category> = new GridData<Category>();
 
-  columns = [{name: 'name', title: 'نام'}];
+  columns = [{name: 'Name', title: 'نام'}];
 
   showSearchField = false;
   loading = false;
@@ -32,11 +32,16 @@ export class CategoriesComponent implements OnInit {
     this.fetch(true);
   }
 
-  fetch(tableLoading?: boolean) {
-    delete this.categories.data;
+  fetch(tableLoading = false) {
+    let pox  = new GridData<Category>();
+    pox.filters = this.categories.filters;
+    pox.pageNumber = this.categories.pageNumber;
+    pox.pageSize = this.categories.pageSize;
+    pox.sortBy = this.categories.sortBy;
+    pox.sortType = this.categories.sortType;
     this.loading = true;
     this.sorting = tableLoading;
-    this.catSrv.get(this.categories).subscribe(res => {
+    this.catSrv.get(pox).subscribe(res => {
       this.loading = false;
       this.sorting = false;
       this.categories = res;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TestBackend.DTOs;
 using TestBackend.Models;
+using System.Linq.Dynamic.Core;
 
 namespace TestBackend.Services
 {
@@ -40,22 +41,13 @@ namespace TestBackend.Services
             {
                 foreach (var filter in queryParams.Filters)
                 {
-                    if (filter.Key == "name")
+                    if (filter.Key == "Name")
                         query = query.Where(c => c.Name.Contains(filter.Value));
                 }
             }
 
             count = await query.CountAsync();
-
-            if (queryParams.SortBy == "id")
-                query = query.OrderBy(c => c.Id );
-            if (queryParams.SortBy == "name")
-            {
-                if (queryParams.SortType == SortType.Asc)
-                    query = query.OrderBy(c => c.Name);
-                else
-                    query = query.OrderByDescending(c => c.Name);
-            }
+            query = query.OrderBy(queryParams.SortBy + (queryParams.SortType == SortType.Asc ? " asc" : " desc"));
 
             query = query.Skip((queryParams.PageNumber - 1) * queryParams.PageSize).Take(queryParams.PageSize);
             

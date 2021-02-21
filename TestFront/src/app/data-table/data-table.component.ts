@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { Filter } from '../models/filter';
 import { GridData, sortType } from '../models/GridData';
-import { PagingParams } from "../models/pagingParams";
 
 @Component({
   selector: 'app-data-table',
@@ -21,8 +20,6 @@ export class DataTableComponent implements OnInit {
   @Output() activeChanged = new EventEmitter();
   @Output() paramsChanged = new EventEmitter();
 
-  pagingParams: PagingParams = new PagingParams();
-
   activeDeactive(): boolean {
     if (!this.loading && !this.loadingFailed) {
       if (this.data.data.length > 0 && this.data.data[0].hasOwnProperty('active'))
@@ -36,6 +33,7 @@ export class DataTableComponent implements OnInit {
   }
 
   toggleSortFor(column: string) {
+    this.data.pageNumber = 1;
     if (this.data.sortBy !== column) {
       this.data.sortType = sortType.Asc;
       this.data.sortBy = column;
@@ -71,6 +69,7 @@ export class DataTableComponent implements OnInit {
   }
 
   search(column: string, value: string) {
+    this.data.pageNumber = 1;
     if (!this.data.filters) {
       this.data.filters = new Array<Filter>();
       this.data.filters.push(new Filter(column, value));
@@ -89,6 +88,5 @@ export class DataTableComponent implements OnInit {
 
   pagingChanged() {
     this.paramsChanged.emit();
-    console.log(this.data);
   }
 }

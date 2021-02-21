@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TestBackend.Models;
 using TestBackend.DTOs;
 using TestBackend.Services;
+using Newtonsoft.Json;
 
 namespace TestBackend.Controllers
 {
@@ -24,9 +25,10 @@ namespace TestBackend.Controllers
 
         // GET: api/ProductList
         [HttpGet]
-        public async Task<ActionResult<GridData<ProductDTO>>> GetProducts()
+        public async Task<ActionResult<GridData<ProductDTO>>> GetProducts([FromQuery] string queryParams)
         {
-            return await _service.Get();
+            var p = JsonConvert.DeserializeObject<GridData<ProductDTO>>(queryParams);
+            return await _service.Get(p);
         }
 
         // GET: api/ProductList/5
